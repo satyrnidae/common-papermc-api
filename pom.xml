@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -61,6 +61,17 @@
         </extensions>
     </build>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>synergian-repo</id>
+            <url>https://raw.github.com/synergian/wagon-git/releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <repositories>
         <repository>
             <id>papermc-repo</id>
@@ -69,10 +80,6 @@
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>synergian-repo</id>
-            <url>https://raw.github.com/synergian/wagon-git/releases</url>
         </repository>
         <repository>
             <id>ftp.satyrn.dev</id>
