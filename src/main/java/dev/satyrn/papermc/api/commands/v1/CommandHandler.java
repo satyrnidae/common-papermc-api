@@ -19,6 +19,7 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
     // The command usage string.
     @Nullable
     private transient String usage;
+
     // The command handler's parent plugin.
     @NotNull
     private final transient Plugin plugin;
@@ -71,6 +72,17 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
     @NotNull
     protected String getUsage(@NotNull final CommandSender sender, @NotNull final Command command) {
         return this.usage == null || this.usage.isEmpty() ? command.getUsage() : this.usage;
+    }
+
+    /**
+     * Gets the plugin instance.
+     *
+     * @return The plugin instance.
+     * @since 1.2-SNAPSHOT
+     */
+    @NotNull
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     /**
