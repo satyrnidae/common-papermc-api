@@ -67,6 +67,16 @@ public abstract class I18n {
     }
 
     /**
+     * Gets the plugin instance.
+     *
+     * @return The plugin instance.
+     */
+    @NotNull
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    /**
      * Translates a string with the given formatting parts.
      *
      * @param key    The key to translate.
@@ -74,11 +84,11 @@ public abstract class I18n {
      * @return The translated key.
      * @since 1.1-SNAPSHOT
      */
-    protected final String tr(@NotNull final String key, @NotNull final Object... format) {
+    protected final String translate(@NotNull final String key, @NotNull final Object... format) {
         if (format.length == 0) {
             return DOUBLE_APOS.matcher(this.translate(key)).replaceAll("'");
         } else {
-            return this.translate(key, format);
+            return this.format(key, format);
         }
     }
 
@@ -152,7 +162,7 @@ public abstract class I18n {
      * @return The translated and formatted key from the resource file, or the key itself if no such key exists.
      * @since 1.1-SNAPSHOT
      */
-    private @NotNull String translate(@NotNull final String key, @NotNull final Object... format) {
+    private @NotNull String format(@NotNull final String key, @NotNull final Object... format) {
         @NotNull String translatedKey = this.translate(key);
         @Nullable MessageFormat messageFormat = this.messageFormatCache.get(translatedKey);
         if (messageFormat == null) {
