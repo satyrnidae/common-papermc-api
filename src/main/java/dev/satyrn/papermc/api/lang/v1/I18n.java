@@ -23,14 +23,15 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unused")
 public abstract class I18n {
+    // The default locale to use for translation.
+    // Since 1.2-SNAPSHOT
+    @NotNull
+    public static final Locale DEFAULT_LOCALE = Locale.US;
     // Double apostrophe pattern
     private static final Pattern DOUBLE_APOS = Pattern.compile("''");
     // The default resource bundle
     @NotNull
     private final transient ResourceBundle defaultBundle;
-    // The default locale to use for translation.
-    @NotNull
-    private final transient Locale defaultLocale = Locale.US;
     // The plugin instance.
     @NotNull
     private final transient Plugin plugin;
@@ -40,7 +41,7 @@ public abstract class I18n {
     private transient ResourceBundle localeBundle;
     // The current locale to use for translation.
     @NotNull
-    private transient Locale currentLocale = defaultLocale;
+    private transient Locale currentLocale = DEFAULT_LOCALE;
 
     /**
      * Initializes a new I18n instance.
@@ -52,6 +53,17 @@ public abstract class I18n {
     protected I18n(@NotNull final Plugin plugin, @NotNull final ResourceBundle defaultBundle) {
         this.plugin = plugin;
         this.defaultBundle = defaultBundle;
+    }
+
+    /**
+     * Gets the current locale.
+     *
+     * @return The current locale.
+     * @since 1.2-SNAPSHOT
+     */
+    @NotNull
+    public Locale getCurrentLocale() {
+        return currentLocale;
     }
 
     /**
