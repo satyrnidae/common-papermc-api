@@ -9,29 +9,29 @@ import java.util.Objects;
 /**
  * Represents a single configuration node. Cannot contain sub-nodes or containers.
  *
- * @param <E> The value type.
+ * @param <T> The value type.
+ * @author Isabel Maskrey
+ * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public abstract class ConfigurationNode<E> {
-    /**
-     * The parent configuration container.
-     */
-    private final transient @Nullable ConfigurationContainer parent;
-    /**
-     * The name of the node.
-     */
-    private final transient @NotNull String name;
-    /**
-     * The configuration file instance.
-     */
-    private final transient @NotNull Configuration config;
+public abstract class ConfigurationNode<T> {
+    // The parent configuration container.
+    @Nullable
+    private final transient ConfigurationContainer parent;
+    // The name of the node.
+    @NotNull
+    private final transient String name;
+    // The configuration file instance.
+    @NotNull
+    private final transient Configuration config;
 
     /**
      * Initializes a new Configuration node.
      *
      * @param parent The parent node.
+     * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationNode(final @Nullable ConfigurationContainer parent, final @NotNull String name, final @NotNull Configuration config) {
+    protected ConfigurationNode(@Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {
         this.parent = parent;
         this.name = name;
         this.config = config;
@@ -41,8 +41,10 @@ public abstract class ConfigurationNode<E> {
      * Gets the configuration instance.
      *
      * @return The configuration instance.
+     * @since 1.0-SNAPSHOT
      */
-    public @NotNull Configuration getConfig() {
+    @NotNull
+    public Configuration getConfig() {
         return config;
     }
 
@@ -50,8 +52,10 @@ public abstract class ConfigurationNode<E> {
      * Gets the name of the node.
      *
      * @return The name of the node.
+     * @since 1.0-SNAPSHOT
      */
-    protected @NotNull String getName() {
+    @NotNull
+    public String getName() {
         return this.name;
     }
 
@@ -59,8 +63,10 @@ public abstract class ConfigurationNode<E> {
      * Constructs the full node path.
      *
      * @return The full node path.
+     * @since 1.0-SNAPSHOT
      */
-    protected @NotNull String getPath() {
+    @NotNull
+    public String getPath() {
         return this.getPath(new StringBuilder());
     }
 
@@ -69,8 +75,10 @@ public abstract class ConfigurationNode<E> {
      *
      * @param stringBuilder The StringBuilder with which to build out the full node path.
      * @return The full node path.
+     * @since 1.0-SNAPSHOT
      */
-    public final @NotNull String getPath(final @NotNull StringBuilder stringBuilder) {
+    @NotNull
+    public final String getPath(@NotNull final StringBuilder stringBuilder) {
         if (parent != null) {
             parent.getPath(stringBuilder);
             stringBuilder.append('.');
@@ -80,12 +88,14 @@ public abstract class ConfigurationNode<E> {
     }
 
     /**
-     * Returns the value of the node as a String.
+     * Returns the value of the node as a string.
      *
-     * @return The value as a String.
+     * @return The value as a string.
+     * @since 1.0-SNAPSHOT
      */
     @Override
-    public final @NotNull String toString() {
+    @NotNull
+    public final String toString() {
         return this.value() == null ? "" : Objects.requireNonNull(this.value()).toString();
     }
 
@@ -93,6 +103,8 @@ public abstract class ConfigurationNode<E> {
      * Gets the value of the node.
      *
      * @return The value.
+     * @since 1.0-SNAPSHOT
      */
-    public abstract @Nullable E value();
+    @Nullable
+    public abstract T value();
 }

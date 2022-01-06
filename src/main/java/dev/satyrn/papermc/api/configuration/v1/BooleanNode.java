@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a configuration node with a boolean value.
+ *
+ * @author Isabel Maskrey
+ * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
 public final class BooleanNode extends ConfigurationNode<Boolean> {
@@ -12,8 +15,9 @@ public final class BooleanNode extends ConfigurationNode<Boolean> {
      *
      * @param parent The parent container.
      * @param name   The name of the configuration node.
+     * @since 1.0-SNAPSHOT
      */
-    public BooleanNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public BooleanNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -21,9 +25,11 @@ public final class BooleanNode extends ConfigurationNode<Boolean> {
      * Returns the boolean value of the node.
      *
      * @return The boolean value.
+     * @since 1.0-SNAPSHOT
      */
     @Override
-    public @NotNull Boolean value() {
+    @NotNull
+    public Boolean value() {
         return this.getConfig().getBoolean(this.getPath());
     }
 }

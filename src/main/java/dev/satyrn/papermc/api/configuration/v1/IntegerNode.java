@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a configuration node with an integer value.
+ *
+ * @author Isabel Maskrey
+ * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
 public final class IntegerNode extends ConfigurationNode<Integer> {
@@ -12,8 +15,9 @@ public final class IntegerNode extends ConfigurationNode<Integer> {
      *
      * @param parent The parent container.
      * @param name   The node's name.
+     * @since 1.0-SNAPSHOT
      */
-    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public IntegerNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -21,9 +25,11 @@ public final class IntegerNode extends ConfigurationNode<Integer> {
      * Returns the integer value of the node.
      *
      * @return The integer value.
+     * @since 1.0-SNAPSHOT
      */
     @Override
-    public @NotNull Integer value() {
+    @NotNull
+    public Integer value() {
         return this.getConfig().getInt(this.getPath());
     }
 }
