@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public final class StringNode extends ConfigurationNode<String> {
+public class StringNode extends ConfigurationNode<String> {
     /**
      * Creates a new configuration node with a string value.
      *
@@ -31,6 +31,18 @@ public final class StringNode extends ConfigurationNode<String> {
     @Override
     @Nullable
     public String value() {
-        return this.getConfig().getString(this.getPath());
+        return this.getConfig().getString(this.getPath(), this.defaultValue());
+    }
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @Nullable
+    public String defaultValue() {
+        return null;
     }
 }

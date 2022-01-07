@@ -107,4 +107,13 @@ public abstract class ConfigurationNode<T> {
      */
     @Nullable
     public abstract T value();
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Nullable
+    public abstract T defaultValue();
 }

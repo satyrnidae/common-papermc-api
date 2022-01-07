@@ -61,4 +61,16 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      */
     @NotNull
     protected abstract E getDefault();
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public final E defaultValue() {
+        return getDefault();
+    }
 }

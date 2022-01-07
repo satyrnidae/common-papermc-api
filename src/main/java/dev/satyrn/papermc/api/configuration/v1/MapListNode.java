@@ -2,6 +2,7 @@ package dev.satyrn.papermc.api.configuration.v1;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public final class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
+public class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
     /**
      * Creates a new configuration node with a Map list value.
      *
@@ -34,5 +35,17 @@ public final class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
     @NotNull
     public List<Map<?,?>> value() {
         return this.getConfig().getMapList(this.getPath());
+    }
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public final List<Map<?, ?>> defaultValue() {
+        return new ArrayList<>();
     }
 }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public final class IntegerNode extends ConfigurationNode<Integer> {
+public class IntegerNode extends ConfigurationNode<Integer> {
     /**
      * Creates a new configuration node with an integer value.
      *
@@ -30,6 +30,18 @@ public final class IntegerNode extends ConfigurationNode<Integer> {
     @Override
     @NotNull
     public Integer value() {
-        return this.getConfig().getInt(this.getPath());
+        return this.getConfig().getInt(this.getPath(), this.defaultValue());
+    }
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public Integer defaultValue() {
+        return 0;
     }
 }

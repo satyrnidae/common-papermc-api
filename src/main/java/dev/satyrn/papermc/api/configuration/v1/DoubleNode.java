@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public final class DoubleNode extends ConfigurationNode<Double> {
+public class DoubleNode extends ConfigurationNode<Double> {
     /**
      * Creates a new configuration node with a double-precision floating point value.
      *
@@ -29,7 +29,19 @@ public final class DoubleNode extends ConfigurationNode<Double> {
      */
     @Override
     @NotNull
-    public Double value() {
-        return this.getConfig().getDouble(this.getPath());
+    public final Double value() {
+        return this.getConfig().getDouble(this.getPath(), this.defaultValue());
+    }
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public final Double defaultValue() {
+        return 0D;
     }
 }

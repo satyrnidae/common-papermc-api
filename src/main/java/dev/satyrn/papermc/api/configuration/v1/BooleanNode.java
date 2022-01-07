@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public final class BooleanNode extends ConfigurationNode<Boolean> {
+public class BooleanNode extends ConfigurationNode<Boolean> {
     /**
      * Creates a new configuration node with a boolean value.
      *
@@ -29,7 +29,19 @@ public final class BooleanNode extends ConfigurationNode<Boolean> {
      */
     @Override
     @NotNull
-    public Boolean value() {
-        return this.getConfig().getBoolean(this.getPath());
+    public final Boolean value() {
+        return this.getConfig().getBoolean(this.getPath(), this.defaultValue());
+    }
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public Boolean defaultValue() {
+        return false;
     }
 }

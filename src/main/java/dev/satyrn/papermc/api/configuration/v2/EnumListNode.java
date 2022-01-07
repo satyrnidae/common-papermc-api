@@ -61,4 +61,16 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      */
     @NotNull
     protected abstract E parse(@NotNull final String value) throws IllegalArgumentException;
+
+    /**
+     * Gets the default value of the node.
+     *
+     * @return The value.
+     * @since 1.3-SNAPSHOT
+     */
+    @Override
+    @NotNull
+    public final List<E> defaultValue() {
+        return new ArrayList<>();
+    }
 }
