@@ -32,7 +32,7 @@ public abstract class I18n {
     // The default resource bundle
     @NotNull
     private final transient ResourceBundle defaultBundle;
-    // The plugin instance.
+    // The plugin.
     @NotNull
     private final transient Plugin plugin;
     // Cache for message format instances.
