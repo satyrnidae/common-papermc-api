@@ -21,7 +21,7 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      * @param name The node name.
      * @since 1.0-SNAPSHOT
      */
-    protected BigIntegerNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
+    public BigIntegerNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
