@@ -23,25 +23,22 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unused")
 public abstract class I18n {
-    // The default locale to use for translation.
-    // Since 1.2-SNAPSHOT
-    @NotNull
-    public static final Locale DEFAULT_LOCALE = Locale.US;
+    /**
+     * The default locale to use for translation.
+     */
+    public static final @NotNull Locale DEFAULT_LOCALE = Locale.US;
     // Double apostrophe pattern
-    private static final Pattern DOUBLE_APOS = Pattern.compile("''");
+    private static final @NotNull Pattern DOUBLE_APOS = Pattern.compile("''");
     // The default resource bundle
-    @NotNull
-    private final transient ResourceBundle defaultBundle;
+    private final transient @NotNull ResourceBundle defaultBundle;
     // The plugin.
-    @NotNull
-    private final transient Plugin plugin;
+    private final transient @NotNull Plugin plugin;
     // Cache for message format instances.
-    private final transient HashMap<String, MessageFormat> messageFormatCache = new HashMap<>();
+    private final transient @NotNull HashMap<String, MessageFormat> messageFormatCache = new HashMap<>();
     // The current locale's resource bundle.
-    private transient ResourceBundle localeBundle;
+    private transient @Nullable ResourceBundle localeBundle;
     // The current locale to use for translation.
-    @NotNull
-    private transient Locale currentLocale = DEFAULT_LOCALE;
+    private transient @NotNull Locale currentLocale = DEFAULT_LOCALE;
 
     /**
      * Initializes a new I18n instance.
@@ -50,7 +47,7 @@ public abstract class I18n {
      * @param defaultBundle The default resource bundle.
      * @since 1.1-SNAPSHOT
      */
-    protected I18n(@NotNull final Plugin plugin, @NotNull final ResourceBundle defaultBundle) {
+    protected I18n(final @NotNull Plugin plugin, final @NotNull ResourceBundle defaultBundle) {
         this.plugin = plugin;
         this.defaultBundle = defaultBundle;
     }
@@ -61,8 +58,7 @@ public abstract class I18n {
      * @return The current locale.
      * @since 1.2-SNAPSHOT
      */
-    @NotNull
-    public Locale getCurrentLocale() {
+    public @NotNull Locale getCurrentLocale() {
         return currentLocale;
     }
 
@@ -71,8 +67,7 @@ public abstract class I18n {
      *
      * @return The plugin instance.
      */
-    @NotNull
-    public Plugin getPlugin() {
+    public @NotNull Plugin getPlugin() {
         return plugin;
     }
 
@@ -84,7 +79,7 @@ public abstract class I18n {
      * @return The translated key.
      * @since 1.1-SNAPSHOT
      */
-    protected final String translate(@NotNull final String key, @NotNull final Object... format) {
+    protected final @NotNull String translate(final @NotNull String key, final @NotNull Object... format) {
         if (format.length == 0) {
             return DOUBLE_APOS.matcher(this.translate(key)).replaceAll("'");
         } else {
@@ -98,7 +93,7 @@ public abstract class I18n {
      * @param locale The locale string.
      * @since 1.1-SNAPSHOT
      */
-    public final void setLocale(@Nullable final String locale) {
+    public final void setLocale(final @Nullable String locale) {
         if (locale != null && !locale.isEmpty()) {
             final String[] parts = locale.split("_");
             if (parts.length == 1) {
@@ -117,7 +112,7 @@ public abstract class I18n {
      * @return The locale's resource bundle.
      * @since 1.1-SNAPSHOT
      */
-    protected abstract ResourceBundle getResourceBundleForLocale(@NotNull final Locale locale);
+    protected abstract @NotNull ResourceBundle getResourceBundleForLocale(final @NotNull Locale locale);
 
     /**
      * Enables the internationalization handler.
@@ -141,10 +136,12 @@ public abstract class I18n {
      * @since 1.1-SNAPSHOT
      */
     private @NotNull String translate(@NotNull final String key) {
-        try {
-            return this.localeBundle.getString(key);
-        } catch (MissingResourceException ex) {
-            this.plugin.getLogger().log(Level.WARNING, String.format("Missing translation key \"%s\" in resource file \"%s.lang\"; falling back to default.", ex.getKey(), localeBundle.getLocale()), ex);
+        if (this.localeBundle != null) {
+            try {
+                return this.localeBundle.getString(key);
+            } catch (MissingResourceException ex) {
+                this.plugin.getLogger().log(Level.WARNING, String.format("Missing translation key \"%s\" in resource file \"%s.lang\"; falling back to default.", ex.getKey(), localeBundle.getLocale()), ex);
+            }
         }
         try {
             return this.defaultBundle.getString(key);
@@ -157,12 +154,12 @@ public abstract class I18n {
     /**
      * Formats a resource value using the specified formatting parts.
      *
-     * @param key The key of the resource to format.
+     * @param key    The key of the resource to format.
      * @param format The format parts.
      * @return The translated and formatted key from the resource file, or the key itself if no such key exists.
      * @since 1.1-SNAPSHOT
      */
-    private @NotNull String format(@NotNull final String key, @NotNull final Object... format) {
+    private @NotNull String format(final @NotNull String key, final @NotNull Object... format) {
         @NotNull String translatedKey = this.translate(key);
         @Nullable MessageFormat messageFormat = this.messageFormatCache.get(translatedKey);
         if (messageFormat == null) {
@@ -203,16 +200,15 @@ public abstract class I18n {
          * @throws IOException Occurs when the bundle file cannot be located or read.
          * @since 1.1-SNAPSHOT
          */
-        public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
-                                        final ClassLoader classLoader, final boolean reload) throws IOException {
-            final String resourceName = this.toResourceName(this.toBundleName(baseName, locale), "lang");
-            ResourceBundle bundle = null;
-            InputStream stream = null;
+        public @Nullable ResourceBundle newBundle(final @NotNull String baseName, final @NotNull Locale locale, final @Nullable String format, final @NotNull ClassLoader classLoader, final boolean reload) throws IOException {
+            final @NotNull String resourceName = this.toResourceName(this.toBundleName(baseName, locale), "lang");
+            @Nullable ResourceBundle bundle = null;
+            @Nullable InputStream stream = null;
             // Reload the file from the URL if reload is specified, otherwise use the class loader's cached stream.
             if (reload) {
-                final URL url = classLoader.getResource(resourceName);
+                final @Nullable URL url = classLoader.getResource(resourceName);
                 if (url != null) {
-                    final URLConnection connection = url.openConnection();
+                    final @Nullable URLConnection connection = url.openConnection();
                     if (connection != null) {
                         connection.setUseCaches(false);
                         stream = connection.getInputStream();
@@ -242,23 +238,23 @@ public abstract class I18n {
          * code, returns the base name.
          * @since 1.1-SNAPSHOT
          */
-        public String toBundleName(final String baseName, final Locale locale) {
+        public @NotNull String toBundleName(final @NotNull String baseName, final @NotNull Locale locale) {
             // Root locale returns base name.
             if (locale == Locale.ROOT) {
                 return baseName;
             }
-            final String language = locale.getLanguage();
+            final @Nullable String language = locale.getLanguage();
             // If language is not specified return the base name.
             if (language == null || language.isEmpty()) {
                 return baseName;
             }
 
-            String country = locale.getCountry();
+            @Nullable String country = locale.getCountry();
             if (country != null) {
                 country = country.toLowerCase(Locale.ROOT);
             }
 
-            StringBuilder sb = new StringBuilder(language);
+            final @NotNull StringBuilder sb = new StringBuilder(language);
             if (country != null && !country.isEmpty()) {
                 sb.append('_').append(country);
             }

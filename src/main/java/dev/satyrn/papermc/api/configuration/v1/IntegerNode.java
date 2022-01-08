@@ -17,7 +17,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public IntegerNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -28,8 +28,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public Integer value() {
+    public @NotNull Integer value() {
         return this.getConfig().getInt(this.getPath(), this.defaultValue());
     }
 
@@ -40,8 +39,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @NotNull
-    public Integer defaultValue() {
+    public @NotNull Integer defaultValue() {
         return 0;
     }
 }

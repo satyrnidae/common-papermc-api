@@ -18,7 +18,7 @@ public class StringNode extends ConfigurationNode<String> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public StringNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public StringNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -29,8 +29,7 @@ public class StringNode extends ConfigurationNode<String> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @Nullable
-    public String value() {
+    public @Nullable String value() {
         return this.getConfig().getString(this.getPath(), this.defaultValue());
     }
 
@@ -41,8 +40,7 @@ public class StringNode extends ConfigurationNode<String> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @Nullable
-    public String defaultValue() {
+    public @Nullable String defaultValue() {
         return null;
     }
 }

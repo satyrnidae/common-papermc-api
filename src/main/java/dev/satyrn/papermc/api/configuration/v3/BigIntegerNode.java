@@ -12,6 +12,7 @@ import java.math.BigInteger;
  * @author Isabel Maskrey
  * @since 1.3-SNAPSHOT
  */
+@SuppressWarnings("unused")
 public class BigIntegerNode extends ConfigurationNode<BigInteger> {
 
     /**
@@ -21,7 +22,7 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      * @param name The node name.
      * @since 1.0-SNAPSHOT
      */
-    public BigIntegerNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
+    public BigIntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

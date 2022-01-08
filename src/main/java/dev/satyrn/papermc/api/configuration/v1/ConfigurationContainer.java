@@ -18,7 +18,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param parent The node parent.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationContainer(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    protected ConfigurationContainer(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -39,8 +39,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @Nullable
-    public final Void value() {
+    public final @Nullable Void value() {
         return null;
     }
 
@@ -51,8 +50,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @Nullable
-    public final Void defaultValue() {
+    public final @Nullable Void defaultValue() {
         return null;
     }
 }

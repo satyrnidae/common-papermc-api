@@ -16,14 +16,11 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public abstract class ConfigurationNode<T> {
     // The parent configuration container.
-    @Nullable
-    private final transient ConfigurationContainer parent;
+    private final transient @Nullable ConfigurationContainer parent;
     // The name of the node.
-    @NotNull
-    private final transient String name;
+    private final transient @NotNull String name;
     // The configuration file instance.
-    @NotNull
-    private final transient Configuration config;
+    private final transient @NotNull Configuration config;
 
     /**
      * Initializes a new Configuration node.
@@ -94,8 +91,7 @@ public abstract class ConfigurationNode<T> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final String toString() {
+    public final @NotNull String toString() {
         return this.value() == null ? "" : Objects.requireNonNull(this.value()).toString();
     }
 
@@ -105,8 +101,7 @@ public abstract class ConfigurationNode<T> {
      * @return The value.
      * @since 1.0-SNAPSHOT
      */
-    @Nullable
-    public abstract T value();
+    public abstract @Nullable T value();
 
     /**
      * Gets the default value of the node.
@@ -114,6 +109,5 @@ public abstract class ConfigurationNode<T> {
      * @return The value.
      * @since 1.3-SNAPSHOT
      */
-    @Nullable
-    public abstract T defaultValue();
+    public abstract @Nullable T defaultValue();
 }

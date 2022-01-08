@@ -3,6 +3,7 @@ package dev.satyrn.papermc.api.configuration.v2;
 import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
 import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public EnumListNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public EnumListNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -34,11 +35,10 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public List<E> value() {
-        @NotNull final List<E> list = new ArrayList<>();
-        @NotNull final List<String> values = this.getConfig().getStringList(this.getPath());
-        for (final String value : values) {
+    public @NotNull List<E> value() {
+        final @NotNull List<E> list = new ArrayList<>();
+        final @NotNull List<String> values = this.getConfig().getStringList(this.getPath());
+        for (final @Nullable String value : values) {
             if (value != null && !value.isEmpty()) {
                 try {
                     final E parsedValue = this.parse(value);
@@ -59,8 +59,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @throws IllegalArgumentException Thrown when an invalid value is parsed.
      * @since 1.0-SNAPSHOT
      */
-    @NotNull
-    protected abstract E parse(@NotNull final String value) throws IllegalArgumentException;
+    protected abstract @NotNull E parse(final @NotNull String value) throws IllegalArgumentException;
 
     /**
      * Gets the default value of the node.
@@ -69,8 +68,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final List<E> defaultValue() {
+    public final @NotNull List<E> defaultValue() {
         return new ArrayList<>();
     }
 }

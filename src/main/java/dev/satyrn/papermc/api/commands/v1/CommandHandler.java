@@ -16,13 +16,10 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public abstract class CommandHandler implements CommandExecutor, TabCompleter {
-    // The command usage string.
-    @Nullable
-    private transient String usage;
-
     // The command handler's parent plugin.
-    @NotNull
-    private final transient Plugin plugin;
+    private final transient @NotNull Plugin plugin;
+    // The command usage string.
+    private transient @Nullable String usage;
 
     /**
      * Initializes a new instance of a command handler.
@@ -38,10 +35,11 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * Sets up a plugin command.
      *
      * @param command The plugin command.
+     * @return The command handler instance.
      * @since 1.1-SNAPSHOT
      */
-    @NotNull
-    public final CommandHandler setupCommand(@NotNull final PluginCommand command) {
+    @Contract(value = "_ -> this", mutates = "this")
+    public final @NotNull CommandHandler setupCommand(final @NotNull PluginCommand command) {
         command.setExecutor(this);
         command.setTabCompleter(this);
         this.setUsage(command.getUsage());
@@ -56,21 +54,22 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * @return The command handler instance.
      * @since 1.1-SNAPSHOT
      */
-    @NotNull
-    public final CommandHandler setupCommand(@NotNull final Plugin plugin, @NotNull final String commandName) {
-        @NotNull final PluginCommand command = Objects.requireNonNull(plugin.getServer().getPluginCommand(commandName));
+    @Contract(value = "_, _ -> this", mutates = "this")
+    public final @NotNull CommandHandler setupCommand(final @NotNull Plugin plugin, final @NotNull String commandName) {
+        final @NotNull PluginCommand command = Objects.requireNonNull(plugin.getServer().getPluginCommand(commandName));
         return this.setupCommand(command);
     }
 
     /**
      * Gets the command usage hint.
      *
+     * @param sender  The command's sender.
      * @param command The command to default to if the usage is not set on the handler.
      * @return The command usage hint.
      * @since 1.1-SNAPSHOT
      */
     @NotNull
-    protected String getUsage(@NotNull final CommandSender sender, @NotNull final Command command) {
+    protected String getUsage(@NotNull final CommandSender sender, final @NotNull Command command) {
         return this.usage == null || this.usage.isEmpty() ? command.getUsage() : this.usage;
     }
 

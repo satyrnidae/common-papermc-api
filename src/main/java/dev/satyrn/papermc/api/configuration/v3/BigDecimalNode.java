@@ -12,6 +12,7 @@ import java.math.BigDecimal;
  * @author Isabel Maskrey
  * @since 1.3-SNAPSHOT
  */
+@SuppressWarnings("unused")
 public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
     /**
      * Initializes a new Configuration node.
@@ -20,7 +21,7 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
      * @param name The node's name.
      * @since 1.3-SNAPSHOT
      */
-    public BigDecimalNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
+    public BigDecimalNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

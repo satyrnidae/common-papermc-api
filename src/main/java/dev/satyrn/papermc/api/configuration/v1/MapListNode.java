@@ -21,7 +21,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
      * @param name The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public MapListNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public MapListNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -32,8 +32,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public List<Map<?,?>> value() {
+    public @NotNull List<Map<?,?>> value() {
         return this.getConfig().getMapList(this.getPath());
     }
 
@@ -44,8 +43,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?,?>>> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final List<Map<?, ?>> defaultValue() {
+    public final @NotNull List<Map<?, ?>> defaultValue() {
         return new ArrayList<>();
     }
 }

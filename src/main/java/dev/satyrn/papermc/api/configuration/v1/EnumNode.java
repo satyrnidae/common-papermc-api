@@ -18,7 +18,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public EnumNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public EnumNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -29,9 +29,8 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final E value() {
-        @Nullable final String enumName = this.getConfig().getString(this.getPath());
+    public final @NotNull E value() {
+        final @Nullable String enumName = this.getConfig().getString(this.getPath());
         if (enumName != null && !enumName.isEmpty()) {
             try {
                 return this.parse(enumName);
@@ -50,8 +49,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @throws IllegalArgumentException Thrown when the enum value parses.
      * @since 1.0-SNAPSHOT
      */
-    @NotNull
-    protected abstract E parse(@NotNull final String value) throws IllegalArgumentException;
+    protected abstract @NotNull E parse(final @NotNull String value) throws IllegalArgumentException;
 
     /**
      * Gets the default enum value.
@@ -59,8 +57,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @return The default enum value.
      * @since 1.0-SNAPSHOT
      */
-    @NotNull
-    protected abstract E getDefault();
+    protected abstract @NotNull E getDefault();
 
     /**
      * Gets the default value of the node.
@@ -69,8 +66,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final E defaultValue() {
+    public final @NotNull E defaultValue() {
         return getDefault();
     }
 }

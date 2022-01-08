@@ -17,7 +17,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param name   The node name.
      * @since 1.0-SNAPSHOT
      */
-    public DoubleNode(@NotNull final ConfigurationContainer parent, @NotNull final String name) {
+    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -28,8 +28,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final Double value() {
+    public final @NotNull Double value() {
         return this.getConfig().getDouble(this.getPath(), this.defaultValue());
     }
 
@@ -40,8 +39,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    @NotNull
-    public final Double defaultValue() {
+    public final @NotNull Double defaultValue() {
         return 0D;
     }
 }
