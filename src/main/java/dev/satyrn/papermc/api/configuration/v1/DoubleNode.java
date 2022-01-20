@@ -39,7 +39,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @since 1.3-SNAPSHOT
      */
     @Override
-    public final @NotNull Double defaultValue() {
+    public @NotNull Double defaultValue() {
         return 0D;
     }
 }
