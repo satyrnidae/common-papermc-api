@@ -6,7 +6,7 @@
 
     <groupId>dev.satyrn</groupId>
     <artifactId>papermc-api</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6.0</version>
     <packaging>jar</packaging>
 
     <name>PaperMC API</name>
@@ -16,7 +16,21 @@
         <java.version>1.17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://github.com/satyrnidae/common-papermc-api</url>
+    <url>https://satyrn.dev/sites/${project.artifactId}</url>
+    <scm>
+        <tag>GitHub</tag>
+        <url>https://github.com/satyrnidae/common-papermc-api</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://raw.githubusercontent.com/satyrnidae/common-papermc-api/main/LICENSE</url>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/satyrnidae/common-papermc-api/issues</url>
+    </issueManagement>
 
     <build>
         <plugins>
