@@ -1,6 +1,7 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
 import org.bukkit.configuration.Configuration;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,9 +28,30 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      *
      * @param config The configuration instance.
      * @since 1.0-SNAPSHOT
+     * @deprecated Use constructors which specify parent plugin instead.
      */
-    protected ConfigurationContainer(@NotNull final Configuration config) {
-        super(null, "", config);
+    @Deprecated
+    protected ConfigurationContainer(final @NotNull Configuration config) {
+        super(null, null, "", config);
+    }
+
+    /**
+     * Initializes the configuration container as a root container.
+     * @param plugin The plugin instance.
+     */
+    protected ConfigurationContainer(final @NotNull Plugin plugin) {
+        super(plugin, null, "", plugin.getConfig());
+    }
+
+    /**
+     * Initializes the configuration container as a root container.
+     *
+     * @param plugin The plugin instance.
+     * @param config The configuration instance.
+     * @since 1.6.0
+     */
+    protected ConfigurationContainer(final @NotNull Plugin plugin, final @NotNull Configuration config) {
+        super(plugin, null, "", config);
     }
 
     /**

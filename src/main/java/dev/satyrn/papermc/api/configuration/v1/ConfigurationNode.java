@@ -1,6 +1,7 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
 import org.bukkit.configuration.Configuration;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,17 +22,48 @@ public abstract class ConfigurationNode<T> {
     private final transient @NotNull String name;
     // The configuration file instance.
     private final transient @NotNull Configuration config;
+    // The plugin. Can be null.
+    private final transient @Nullable Plugin plugin;
 
     /**
      * Initializes a new Configuration node.
      *
      * @param parent The parent node.
+     * @param name The node name.
+     * @param config The configuration instance.
+     *
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationNode(@Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {
+    protected ConfigurationNode(final @Nullable ConfigurationContainer parent, final @NotNull String name, final @NotNull Configuration config) {
+        this(parent == null ? null : parent.getPlugin(), parent, name, config);
+    }
+
+    /**
+     * Initializes a new Configuration node.
+     *
+     * @param plugin The plugin instance.
+     * @param parent The parent node.
+     * @param name The node name.
+     * @param config The configuration instance.
+     *
+     * @since 1.6.0
+     */
+    protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {
+        this.plugin = plugin;
         this.parent = parent;
         this.name = name;
         this.config = config;
+    }
+
+    /**
+     * Gets the plugin instance.
+     *
+     * @return The plugin instance. May be null.
+     * @since 1.6.0
+     */
+    @Nullable
+    public Plugin getPlugin() {
+        return this.plugin;
     }
 
     /**

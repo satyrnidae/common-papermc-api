@@ -3,6 +3,8 @@ package dev.satyrn.papermc.api.configuration.v1;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Level;
+
 /**
  * Represents a configuration node with a Log Level value.
  *
@@ -35,6 +37,11 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
             try {
                 return this.parse(enumName);
             } catch (IllegalArgumentException ex) {
+                if (this.getPlugin() != null) {
+                    this.getPlugin()
+                            .getLogger()
+                            .log(Level.WARNING, String.format("[Configuration] Invalid value for %s: %s. The default value %s will be used instead.", this.getPath(), enumName, this.defaultValue()));
+                }
                 return this.getDefault();
             }
         }

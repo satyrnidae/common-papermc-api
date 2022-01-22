@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Represents a configuration node with a list of enum values.
@@ -44,7 +45,11 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
                     final E parsedValue = this.parse(value);
                     list.add(parsedValue);
                 } catch (IllegalArgumentException ex) {
-                    // Does not add the null value to the list.
+                    if (this.getPlugin() != null) {
+                        this.getPlugin()
+                                .getLogger()
+                                .log(Level.WARNING, String.format("[Configuration] The list %s contains an invalid value: %s. This entry has been discarded!", this.getPath(), value));
+                    }
                 }
             }
         }
