@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * @since 1.1-SNAPSHOT
  */
 @SuppressWarnings("unused")
-public abstract class I18n {
+public class I18n {
     /**
      * The default locale to use for translation.
      */
@@ -39,6 +39,10 @@ public abstract class I18n {
     private transient @Nullable ResourceBundle localeBundle;
     // The current locale to use for translation.
     private transient @NotNull Locale currentLocale = DEFAULT_LOCALE;
+    // The base name of the internationalization instance.
+    private final transient @NotNull String baseName;
+    // The instance.
+    private static @Nullable I18n instance;
 
     /**
      * Initializes a new I18n instance.
@@ -50,6 +54,42 @@ public abstract class I18n {
     protected I18n(final @NotNull Plugin plugin, final @NotNull ResourceBundle defaultBundle) {
         this.plugin = plugin;
         this.defaultBundle = defaultBundle;
+        this.baseName = defaultBundle.getBaseBundleName();
+    }
+
+    /**
+     * Initializes a new I18n instance.
+     *
+     * @param plugin The plugin instance.
+     * @param baseName The default resource bundle.
+     */
+    public I18n(final @NotNull Plugin plugin, final @NotNull String baseName) {
+        this.plugin = plugin;
+        this.baseName = baseName;
+        this.defaultBundle = ResourceBundle.getBundle(baseName, DEFAULT_LOCALE, new Utf8LangFileControl());
+    }
+
+    /**
+     * Gets the current I18n instance.
+     * @return The current I18n instance.
+     */
+    public static @Nullable I18n getInstance() {
+        return instance;
+    }
+
+    /**
+     * Translates a resource key.
+     *
+     * @param key    The resource key.
+     * @param format The formatting for the message.
+     * @return The translated key.
+     * @since 0.0.0-SNAPSHOT
+     */
+    public static String tr(final @NotNull String key, final @NotNull Object... format) {
+        if (instance == null) {
+            return key;
+        }
+        return instance.translate(key, format);
     }
 
     /**
@@ -106,27 +146,32 @@ public abstract class I18n {
     }
 
     /**
-     * Gets a resource bundle for a given locale.
+     * Gets a resource bundle for the current locale.
      *
-     * @param locale The locale to fetch.
-     * @return The locale's resource bundle.
-     * @since 1.1-SNAPSHOT
+     * @param locale The current locale.
+     * @return The new resource bundle.
+     * @since 0.0.0-SNAPSHOT
      */
-    protected abstract @NotNull ResourceBundle getResourceBundleForLocale(final @NotNull Locale locale);
-
+    protected @NotNull ResourceBundle getResourceBundleForLocale(final @NotNull Locale locale) {
+        return ResourceBundle.getBundle(this.baseName, locale, new Utf8LangFileControl());
+    }
     /**
      * Enables the internationalization handler.
      *
      * @since 1.1-SNAPSHOT
      */
-    public abstract void enable();
+    public void enable() {
+        instance = this;
+    }
 
     /**
      * Disables the internationalization handler.
      *
      * @since 1.1-SNAPSHOT
      */
-    public abstract void disable();
+    public void disable() {
+        instance = null;
+    }
 
     /**
      * Translates a given resource key using the current locale bundle.
@@ -254,7 +299,7 @@ public abstract class I18n {
                 country = country.toLowerCase(Locale.ROOT);
             }
 
-            final @NotNull StringBuilder sb = new StringBuilder(language);
+            final @NotNull StringBuilder sb = new StringBuilder(baseName).append('.').append(language);
             if (country != null && !country.isEmpty()) {
                 sb.append('_').append(country);
             }

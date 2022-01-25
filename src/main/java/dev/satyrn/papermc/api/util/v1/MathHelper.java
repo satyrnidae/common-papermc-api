@@ -6,12 +6,15 @@ package dev.satyrn.papermc.api.util.v1;
  * @author Isabel Maskrey
  * @since 1.5-SNAPSHOT
  */
+@SuppressWarnings("unused")
 public final class MathHelper {
-    private MathHelper() { }
+    private MathHelper() {
+    }
 
     /**
      * Clamps a double between a min and max value.
-     * @param d The double value.
+     *
+     * @param d   The double value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
      * @return The clamped result.
@@ -23,7 +26,8 @@ public final class MathHelper {
 
     /**
      * Clamps a float between a min and max value.
-     * @param f The float value.
+     *
+     * @param f   The float value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
      * @return The clamped result.
@@ -35,7 +39,8 @@ public final class MathHelper {
 
     /**
      * Clamps an integer between a min and max value.
-     * @param i The integer value.
+     *
+     * @param i   The integer value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
      * @return The clamped result.
@@ -47,8 +52,9 @@ public final class MathHelper {
 
     /**
      * Gets the log of a value with the specified base.
+     *
      * @param value The value.
-     * @param base The base.
+     * @param base  The base.
      * @return The resultant value.
      * @since 1.5-SNAPSHOT
      */

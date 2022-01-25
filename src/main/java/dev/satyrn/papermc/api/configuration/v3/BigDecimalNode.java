@@ -18,7 +18,7 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
      * Initializes a new Configuration node.
      *
      * @param parent The parent node.
-     * @param name The node's name.
+     * @param name   The node's name.
      * @since 1.3-SNAPSHOT
      */
     public BigDecimalNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {

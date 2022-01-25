@@ -6,6 +6,7 @@ package dev.satyrn.papermc.api.storage.v1;
  * @author Isabel Maskrey
  * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public enum StorageType {
     /**
      * Flat-file storage, such as YAML or text files.

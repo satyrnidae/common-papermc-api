@@ -7,7 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a storage type node.
+ *
+ * @author Isabel Maskrey
+ * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public final class StorageTypeNode extends EnumNode<StorageType> {
     /**
      * Creates a new configuration node with a Log Level value.
@@ -25,7 +29,7 @@ public final class StorageTypeNode extends EnumNode<StorageType> {
      *
      * @param value The string value from the config file
      * @return The parsed enum value.
-     * @throws IllegalArgumentException Thrown when the enum value parses.
+     * @throws IllegalArgumentException Thrown when the enum value fails to parse.
      * @since 1.6.0
      */
     @Override

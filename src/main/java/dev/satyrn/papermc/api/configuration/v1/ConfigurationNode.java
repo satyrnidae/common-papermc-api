@@ -29,9 +29,8 @@ public abstract class ConfigurationNode<T> {
      * Initializes a new Configuration node.
      *
      * @param parent The parent node.
-     * @param name The node name.
+     * @param name   The node name.
      * @param config The configuration instance.
-     *
      * @since 1.0-SNAPSHOT
      */
     protected ConfigurationNode(final @Nullable ConfigurationContainer parent, final @NotNull String name, final @NotNull Configuration config) {
@@ -43,9 +42,8 @@ public abstract class ConfigurationNode<T> {
      *
      * @param plugin The plugin instance.
      * @param parent The parent node.
-     * @param name The node name.
+     * @param name   The node name.
      * @param config The configuration instance.
-     *
      * @since 1.6.0
      */
     protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {

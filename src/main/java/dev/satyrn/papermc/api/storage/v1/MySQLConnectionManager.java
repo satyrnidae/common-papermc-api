@@ -59,10 +59,12 @@ public class MySQLConnectionManager implements ConnectionManager {
         try {
             final @NotNull String connectionURL = connectionURLBuilder.toString();
             final @Nullable String userID = this.configuration.userID.value();
-            this.plugin.getLogger().log(Level.FINE, String.format("[Storage] Attempting connection to MySQL-like database at %s with %s", connectionURL, userID == null ? "anonymous user" : "user " + userID));
+            this.plugin.getLogger()
+                    .log(Level.FINE, String.format("[Storage] Attempting connection to MySQL-like database at %s with %s", connectionURL, userID == null ? "anonymous user" : "user " + userID));
             connection = DriverManager.getConnection(connectionURL, userID, this.configuration.password.value());
         } catch (SQLException ex) {
-            this.plugin.getLogger().log(Level.SEVERE, String.format("[Storage] Failed to connect to the database: %s", ex.getMessage()), ex);
+            this.plugin.getLogger()
+                    .log(Level.SEVERE, String.format("[Storage] Failed to connect to the database: %s", ex.getMessage()), ex);
         }
 
         return connection;

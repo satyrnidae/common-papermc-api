@@ -1,5 +1,6 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -10,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 public class DoubleNode extends ConfigurationNode<Double> {
+    // The minimum value of the node.
+    private final double minValue;
+    // The maximum value of the node.
+    private final double maxValue;
+
     /**
      * Creates a new configuration node with a double-precision floating point value.
      *
@@ -19,6 +25,23 @@ public class DoubleNode extends ConfigurationNode<Double> {
      */
     public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
+        this.minValue = Double.MIN_VALUE;
+        this.maxValue = Double.MAX_VALUE;
+    }
+
+    /**
+     * Creates a new configuration node with a double-precision floating point value.
+     *
+     * @param parent   The parent container.
+     * @param name     The node name.
+     * @param minValue The minimum value of the node.
+     * @param maxValue The maximum value of the node.
+     * @since 1.6.2
+     */
+    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, final double minValue, final double maxValue) {
+        super(parent, name, parent.getConfig());
+        this.minValue = minValue;
+        this.maxValue = maxValue;
     }
 
     /**
@@ -29,7 +52,8 @@ public class DoubleNode extends ConfigurationNode<Double> {
      */
     @Override
     public final @NotNull Double value() {
-        return this.getConfig().getDouble(this.getPath(), this.defaultValue());
+        return MathHelper.clampd(this.getConfig()
+                .getDouble(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**

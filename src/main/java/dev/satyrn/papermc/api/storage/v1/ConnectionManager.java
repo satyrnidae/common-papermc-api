@@ -10,6 +10,7 @@ import java.sql.Connection;
  * @author Isabel Maskrey
  * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public interface ConnectionManager {
     /**
      * Opens a connection to the data source.

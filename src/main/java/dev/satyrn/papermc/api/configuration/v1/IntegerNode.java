@@ -1,5 +1,6 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -10,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 public class IntegerNode extends ConfigurationNode<Integer> {
+    // The minimum value of the node.
+    private final int minValue;
+    // The maximum value of the node.
+    private final int maxValue;
+
     /**
      * Creates a new configuration node with an integer value.
      *
@@ -19,6 +25,23 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      */
     public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
+        this.minValue = Integer.MIN_VALUE;
+        this.maxValue = Integer.MAX_VALUE;
+    }
+
+    /**
+     * Creates a new configuration node with an integer value. The value is bounded by min and max.
+     *
+     * @param parent   The parent configuration container.
+     * @param name     The node's name.
+     * @param minValue The minimum value allowed by the node.
+     * @param maxValue The maximum value allowed by the node.
+     * @since 1.6.2
+     */
+    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, int minValue, int maxValue) {
+        super(parent, name, parent.getConfig());
+        this.minValue = minValue;
+        this.maxValue = maxValue;
     }
 
     /**
@@ -28,8 +51,9 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    public @NotNull Integer value() {
-        return this.getConfig().getInt(this.getPath(), this.defaultValue());
+    public final @NotNull Integer value() {
+        return MathHelper.clamp(this.getConfig()
+                .getInt(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**

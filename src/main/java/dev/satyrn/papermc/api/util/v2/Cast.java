@@ -11,16 +11,19 @@ import java.util.Optional;
  * @author Isabel Maskrey
  * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public final class Cast {
 
     // Do not instantiate the Cast class.
-    private Cast() { }
+    private Cast() {
+    }
 
     /**
      * Safe-casts an object to another type.
+     *
      * @param asClass The class to cast to.
-     * @param object The object to cast.
-     * @param <T> The type that the object will be cast to.
+     * @param object  The object to cast.
+     * @param <T>     The type that the object will be cast to.
      * @return An optional of T where the result is only present if the cast succeeded.
      */
     @SuppressWarnings("unused")

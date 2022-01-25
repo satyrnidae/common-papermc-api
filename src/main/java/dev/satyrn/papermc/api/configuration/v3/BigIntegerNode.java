@@ -19,7 +19,7 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      * Initializes a new Configuration node.
      *
      * @param parent The parent node.
-     * @param name The node name.
+     * @param name   The node name.
      * @since 1.0-SNAPSHOT
      */
     public BigIntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
