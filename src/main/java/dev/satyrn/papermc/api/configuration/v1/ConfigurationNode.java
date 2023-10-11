@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,7 @@ import java.util.Objects;
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
  */
+@SuppressWarnings("unused")
 public abstract class ConfigurationNode<T> {
     // The parent configuration container.
     private final @Nullable ConfigurationNode<?> parent;
@@ -24,8 +26,8 @@ public abstract class ConfigurationNode<T> {
 
     // The configuration file instance.
     private final @NotNull Configuration config;
-    // The plugin. Can be null.
-    private final @Nullable Plugin plugin;
+    // The plugin. Cannot be null.
+    private final @NotNull Plugin plugin;
 
     // All child objects added to this node.
     private final @NotNull Collection<ConfigurationNode<?>> children = new ArrayList<>();
@@ -38,8 +40,8 @@ public abstract class ConfigurationNode<T> {
      * @param config The configuration instance.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationNode(final @Nullable ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
-        this(parent == null ? null : parent.getPlugin(), parent, name, config);
+    protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
+        this(parent.getPlugin(), parent, name, config);
     }
 
     /**
@@ -51,7 +53,7 @@ public abstract class ConfigurationNode<T> {
      * @param config The configuration instance.
      * @since 1.6.0
      */
-    protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
+    protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
         this.plugin = plugin;
         this.parent = parent;
         this.name = name;
@@ -68,7 +70,7 @@ public abstract class ConfigurationNode<T> {
      * @return The plugin instance. May be null.
      * @since 1.6.0
      */
-    @Nullable
+    @NotNull
     public Plugin getPlugin() {
         return this.plugin;
     }
@@ -177,7 +179,9 @@ public abstract class ConfigurationNode<T> {
                 stringBuilder.append('.');
             }
         }
-        stringBuilder.append(this.getName());
+        if (this.hasName()) {
+            stringBuilder.append(this.getName());
+        }
 
         return stringBuilder.toString();
     }
@@ -261,10 +265,186 @@ public abstract class ConfigurationNode<T> {
     }
 
     /**
-     * Whether the configuration node is a root node.
-     * @return {@code true} if the root node name is null or blank; otherwise, {@code false}
+     * Whether the configuration node is a sub node or a root node.
+     * @return {@code true} if the node has a parent node; otherwise, {@code false}
      */
     public final boolean isSubNode() {
         return this.parent != null;
+    }
+
+    /**
+     * Whether the configuration node is named.
+     * @return {@code true} if the root node name is not null or blank; otherwise, {@code false}
+     */
+    public final boolean hasName() {
+        return this.name != null && !this.name.isBlank();
+    }
+
+    /**
+     * Writes the value of the node to the config file.
+     *
+     * @since 1.9.0
+     */
+    public void save() {
+        Object value = this.value();
+        if (value != null && this.isSubNode()) {
+            this.getConfig().set(this.getValuePath(), value);
+        }
+        if (this.hasChildren()) {
+            for (ConfigurationNode<?> child : this.children) {
+                child.save();
+            }
+        }
+    }
+
+    /**
+     * Gets the comment list for the value node path.
+     * <p>
+     * If no comments exist, an empty list will be returned. A null entry
+     * represents an empty line and an empty String represents an empty comment
+     * line.
+     *
+     * @return An unmodifiable list of the node's comments. Every entry
+     * represents one line.
+     *
+     * @since 1.9.0
+     */
+    public @NotNull List<String> getComments() {
+        return this.getComments(false);
+    }
+
+    /**
+     * Gets the comment list for this node.
+     * <p>
+     * If no comments exist, an empty list will be returned. A null entry
+     * represents an empty line and an empty String represents an empty comment
+     * line.
+     *
+     * @param basePath If {@code true}, the node's base path will be used instead
+     *                 of its value path. This is useful if you have nested value
+     *                 nodes.
+     * @return An unmodifiable list of the node's comments. Every entry
+     * represents one line.
+     *
+     * @since 1.9.0
+     */
+    public @NotNull List<String> getComments(boolean basePath) {
+        final @NotNull StringBuilder stringBuilder = new StringBuilder();
+        return this.config.getComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
+    }
+
+    /**
+     * Gets the inline comment list for the value node path.
+     * <p>
+     * If no comments exist, an empty list will be returned. A null entry
+     * represents an empty line and an empty String represents an empty comment
+     * line.
+     *
+     * @return An unmodifiable list of the node's inline comments. Every entry
+     * represents one line.
+     *
+     * @since 1.9.0
+     */
+    public @NotNull List<String> getInlineComments() {
+        return this.getInlineComments(false);
+    }
+
+    /**
+     * Gets the inline comment list for this node.
+     * <p>
+     * If no comments exist, an empty list will be returned. A null entry
+     * represents an empty line and an empty String represents an empty comment
+     * line.
+     *
+     * @param basePath If {@code true}, the node's base path will be used instead
+     *                 of the value path. This is useful if you have nested value
+     *                 nodes.
+     * @return An unmodifiable list of the node's inline comments. Every entry
+     * represents one line.
+     *
+     * @since 1.9.0
+     */
+    public @NotNull List<String> getInlineComments(boolean basePath) {
+        final @NotNull StringBuilder stringBuilder = new StringBuilder();
+        return this.config.getInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
+    }
+
+    /**
+     * Sets the comment list at the value node path.
+     * <p>
+     * If value is null, the comments will be removed. A null entry is an empty
+     * line and an empty String entry is an empty comment line. If the path does
+     * not exist, no comments will be set. Any existing comments will be
+     * replaced, regardless of what the new comments are.
+     * <p>
+     * Some implementations may have limitations on what persists. See their
+     * individual javadocs for details.
+     * @param comments New comments to set at the value node. Every entry represents a new line.
+     *
+     * @since 1.9.0
+     */
+    public void setComments(String... comments) {
+        this.setComments(false, comments);
+    }
+
+    /**
+     * Sets the comment list for the node.
+     * <p>
+     * If value is null, the comments will be removed. A null entry is an empty
+     * line and an empty String entry is an empty comment line. If the path does
+     * not exist, no comments will be set. Any existing comments will be
+     * replaced, regardless of what the new comments are.
+     * <p>
+     * Some implementations may have limitations on what persists. See their
+     * individual javadocs for details.
+     * @param basePath If {@code true}, the node's base path will be used instead
+     *                 of its value path. This is useful if you have nested value
+     *                 nodes.
+     * @param comments New comments to set for the node. Every entry represents a new line.
+     *
+     * @since 1.9.0
+     */
+    public void setComments(boolean basePath, String... comments) {
+        final @NotNull StringBuilder stringBuilder = new StringBuilder();
+        this.config.setComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
+    }
+
+    /**
+     * Sets the inline comment list at the value node path.
+     * <p>
+     * If value is null, the comments will be removed. A null entry is an empty
+     * line and an empty String entry is an empty comment line. If the path does
+     * not exist, no comment will be set. Any existing comments will be
+     * replaced, regardless of what the new comments are.
+     * <p>
+     * Some implementations may have limitations on what persists. See their
+     * individual javadocs for details.
+     * @param comments New comments to set at the value node path. Every entry represents a new line.
+     *
+     * @since 1.9.0
+     */
+    public void setInlineComments(String... comments) {
+        this.setInlineComments(false, comments);
+    }
+
+    /**
+     * Sets the inline comment list for the node.
+     * <p>
+     * If value is null, the comments will be removed. A null entry is an empty
+     * line and an empty String entry is an empty comment line. If the path does
+     * not exist, no comment will be set. Any existing comments will be
+     * replaced, regardless of what the new comments are.
+     * <p>
+     * Some implementations may have limitations on what persists. See their
+     * individual javadocs for details.
+     * @param basePath if {@code true}, the base path will be used instead of the value path.
+     *                 This can be useful if you have nested value nodes.
+     * @param comments New comments to set for the node. Every entry represents a new line.
+     *
+     * @since 1.9.0
+     */
+    public void setInlineComments(boolean basePath, String... comments) {
+        final @NotNull StringBuilder stringBuilder = new StringBuilder();
+        this.config.setInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
     }
 }
