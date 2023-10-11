@@ -1,17 +1,13 @@
-package dev.satyrn.papermc.api.configuration.v5;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a container of nodes which dictate the function of and options for the MySQL server backend.
  *
  * @author Isabel Maskrey
- * @since 1.6.0
- *
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.MySQLConfiguration} instead
+ * @since 1.9.0
  */
-@Deprecated(since="1.9.0", forRemoval = true)
 public final class MySQLConfiguration extends ConfigurationContainer {
     /**
      * Whether the MySQL server backend should be enabled.

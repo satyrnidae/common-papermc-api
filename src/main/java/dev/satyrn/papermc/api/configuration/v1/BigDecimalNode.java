@@ -1,7 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v3;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -10,11 +8,8 @@ import java.math.BigDecimal;
  * Represents a configurable BigDecimal value.
  *
  * @author Isabel Maskrey
- * @since 1.3-SNAPSHOT
- *
- * @deprecated Since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.BigDecimalNode} instead.
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
 public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
     /**

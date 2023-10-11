@@ -1,7 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v5;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import dev.satyrn.papermc.api.configuration.v1.EnumNode;
 import dev.satyrn.papermc.api.storage.v1.StorageType;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,11 +7,8 @@ import org.jetbrains.annotations.NotNull;
  * Represents a storage type node.
  *
  * @author Isabel Maskrey
- * @since 1.6.0
- *
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.StorageTypeNode} instead.
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
 public final class StorageTypeNode extends EnumNode<StorageType> {
     /**

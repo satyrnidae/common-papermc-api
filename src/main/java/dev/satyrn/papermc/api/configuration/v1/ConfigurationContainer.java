@@ -55,6 +55,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
     }
 
     /**
+     * Gets the current value of the node.
      * Always returns null for configuration containers.
      *
      * @return {@code null}
@@ -67,6 +68,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
 
     /**
      * Gets the default value of the node.
+     * Always returns null for configuration containers.
      *
      * @return The value.
      * @since 1.3-SNAPSHOT
@@ -75,4 +77,13 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
     public final @Nullable Void defaultValue() {
         return null;
     }
+
+    /**
+     * Sets the value of the node.
+     * @param value The value to set.
+     *
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Void value) { }
 }

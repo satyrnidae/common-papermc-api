@@ -66,4 +66,16 @@ public class DoubleNode extends ConfigurationNode<Double> {
     public @NotNull Double defaultValue() {
         return 0D;
     }
+
+    /**
+     * Sets the value of the node.
+     *
+     * @param value The value to set.
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Double value) {
+        this.getConfig().set(this.getPath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
+        this.getConfig().setComments(this.getPath(), this.getComments());
+    }
 }

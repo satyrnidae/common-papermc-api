@@ -1,6 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v4;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,16 +8,17 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <T> The configuration class
  * @author Isabel Maskrey
- * @since 1.4-SNAPSHOT
- * @deprecated Since 1.6.1. To be removed in a future version due to 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.ConfigurationConsumer} instead.
+ * @since 1.9.0
+ * @deprecated Since 1.6.1. Use configuration node values directly.
  */
-@Deprecated(since = "1.6.1", forRemoval = true)
+@Deprecated(since = "1.6.1")
 @SuppressWarnings("unused")
 public interface ConfigurationConsumer<T extends ConfigurationContainer> {
     /**
      * Reloads the configuration file.
      *
      * @param configuration The configuration file.
+     * @since 1.4-SNAPSHOT
      */
     void reloadConfiguration(final @NotNull T configuration);
 }

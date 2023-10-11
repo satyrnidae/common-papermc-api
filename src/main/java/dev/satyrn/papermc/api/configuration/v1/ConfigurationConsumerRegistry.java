@@ -1,6 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v4;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -10,9 +9,10 @@ import java.util.List;
  * Models a registry for classes which listen to a configuration file for changes.
  *
  * @param <T> The configuration container type.
- * @deprecated Since 1.6.1. To be removed due to 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.ConfigurationConsumerRegistry} instead.
+ * @since 1.9.0
+ * @deprecated Since 1.6.1. Use configuration node values directly.
  */
-@Deprecated(since = "1.6.1", forRemoval = true)
+@Deprecated(since = "1.6.1")
 @SuppressWarnings("unused")
 public abstract class ConfigurationConsumerRegistry<T extends ConfigurationContainer> {
     private final @NotNull List<ConfigurationConsumer<T>> consumers = new ArrayList<>();
@@ -22,6 +22,8 @@ public abstract class ConfigurationConsumerRegistry<T extends ConfigurationConta
      *
      * @param instance The configuration consumer.
      * @param <K>      The consumer type.
+     *
+     * @since 1.4-SNAPSHOT
      */
     public final <K extends ConfigurationConsumer<T>> void register(final @NotNull K instance) {
         if (!this.consumers.contains(instance)) {
@@ -33,6 +35,8 @@ public abstract class ConfigurationConsumerRegistry<T extends ConfigurationConta
      * Reloads the configuration for each consumer.
      *
      * @param configuration The configuration instance.
+     *
+     * @since 1.4-SNAPSHOT
      */
     public final void reload(final @NotNull T configuration) {
         for (final ConfigurationConsumer<T> instance : this.consumers) {

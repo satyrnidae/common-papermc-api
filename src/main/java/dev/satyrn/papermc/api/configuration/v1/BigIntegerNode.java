@@ -1,7 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v3;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -10,11 +8,8 @@ import java.math.BigInteger;
  * Represents a configurable BigInteger value.
  *
  * @author Isabel Maskrey
- * @since 1.3-SNAPSHOT
- *
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.BigIntegerNode} instead.
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
 public class BigIntegerNode extends ConfigurationNode<BigInteger> {
 

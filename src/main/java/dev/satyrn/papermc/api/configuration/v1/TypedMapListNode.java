@@ -1,7 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v4;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -19,11 +17,8 @@ import java.util.logging.Level;
  * @param <K> The key type.
  * @param <V> The value type.
  * @author Isabel Maskrey
- * @since 1.3-SNAPSHOT
- *
- * @deprecated since 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.TypedMapListNode} instead.
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
 public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<K, V>>> {
     /**

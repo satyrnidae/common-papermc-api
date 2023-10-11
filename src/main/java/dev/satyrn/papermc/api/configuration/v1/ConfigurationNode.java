@@ -5,6 +5,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,13 +20,17 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public abstract class ConfigurationNode<T> {
     // The parent configuration container.
-    private final transient @Nullable ConfigurationContainer parent;
+    private final @Nullable ConfigurationContainer parent;
     // The name of the node.
-    private final transient @NotNull String name;
+    private final @NotNull String name;
+
     // The configuration file instance.
-    private final transient @NotNull Configuration config;
+    private final @NotNull Configuration config;
     // The plugin. Can be null.
-    private final transient @Nullable Plugin plugin;
+    private final @Nullable Plugin plugin;
+
+    // All child objects added to this node.
+    private final @NotNull Collection<ConfigurationNode<?>> children = new ArrayList<>();
 
     /**
      * Initializes a new Configuration node.
@@ -45,12 +52,23 @@ public abstract class ConfigurationNode<T> {
      * @param name   The node name.
      * @param config The configuration instance.
      * @since 1.6.0
+     * @throws IllegalArgumentException if the name is empty, but the node is added to a parent
+     * @throws IllegalArgumentException if the name is not empty, but the node is not added to a parent
      */
     protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {
         this.plugin = plugin;
         this.parent = parent;
         this.name = name;
         this.config = config;
+
+        if (parent != null) {
+            if (this.name.isBlank()) {
+                throw new IllegalArgumentException("A non-named node cannot be added to a parent!");
+            }
+            parent.addChild(this);
+        } else if (!this.name.isBlank()) {
+            throw new IllegalArgumentException("A named node cannot be used as a root node.");
+        }
     }
 
     /**
@@ -111,6 +129,11 @@ public abstract class ConfigurationNode<T> {
             stringBuilder.append('.');
         }
         stringBuilder.append(this.getName());
+        // If the node contains children, but still stores a value, it must contain a value node
+        // If the name of the node is empty then it is a root node.
+        if (!this.getName().isBlank() && !this.children.isEmpty()) {
+            stringBuilder.append(".value");
+        }
         return stringBuilder.toString();
     }
 
@@ -140,4 +163,64 @@ public abstract class ConfigurationNode<T> {
      * @since 1.3-SNAPSHOT
      */
     public abstract @Nullable T defaultValue();
+
+    /**
+     * Sets the value of the node.
+     * @param value The value to set.
+     *
+     * @since 1.9.0
+     */
+    public void setValue(T value) {
+        this.config.set(this.getPath(), value == null ? this.defaultValue() : value);
+        this.config.setComments(this.getPath(), this.getComments());
+    }
+
+    /**
+     * Gets a list of comments.
+     *
+     * @return A list of the comments for the config node.
+     *
+     * @since 1.9.0
+     */
+    public @Nullable List<String> getComments() {
+        return null;
+    }
+
+    /**
+     * Ensures that the node's list of children includes the specified child node.
+     *
+     * @param configurationNode the child to add to the node.
+     * @throws UnsupportedOperationException if the {@code add} operation
+     *         is not supported by this collection
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this collection
+     * @throws NullPointerException if the specified element is null and this
+     *         collection does not permit null elements
+     * @throws IllegalArgumentException if some property of the element
+     *         prevents it from being added to this collection
+     * @throws IllegalStateException if the element cannot be added at this
+     *         time due to insertion restrictions
+     *
+     * @since 1.9.0
+     */
+    protected void addChild(ConfigurationNode<?> configurationNode) {
+        children.add(configurationNode);
+    }
+
+    /**
+     * Sets the comment list at the specified path.
+     * <p>
+     * If value is null, the comments will be removed. A null entry is an empty
+     * line and an empty String entry is an empty comment line. If the path does
+     * not exist, no comments will be set. Any existing comments will be
+     * replaced, regardless of what the new comments are.
+     * <p>
+     * Some implementations may have limitations on what persists. See their
+     * individual javadocs for details.
+     *
+     * @since 1.9.0
+     */
+    public void setComments() {
+        config.setComments(this.getPath(), this.getComments());
+    }
 }

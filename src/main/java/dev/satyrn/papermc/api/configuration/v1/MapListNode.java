@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
+ *
  */
 @SuppressWarnings("unused")
 public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {

@@ -66,4 +66,16 @@ public class IntegerNode extends ConfigurationNode<Integer> {
     public @NotNull Integer defaultValue() {
         return 0;
     }
+
+    /**
+     * Sets the value of the node.
+     *
+     * @param value The value to set.
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Integer value) {
+        this.getConfig().set(this.getPath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
+        this.getConfig().setComments(this.getPath(), this.getComments());
+    }
 }

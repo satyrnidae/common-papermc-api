@@ -1,7 +1,5 @@
-package dev.satyrn.papermc.api.configuration.v2;
+package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,11 +12,8 @@ import java.util.logging.Level;
  *
  * @param <E> The enum type.
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
- *
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.EnumListNode}
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
 public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<List<E>> {
     /**

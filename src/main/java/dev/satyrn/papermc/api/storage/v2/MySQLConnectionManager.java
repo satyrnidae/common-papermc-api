@@ -1,6 +1,7 @@
-package dev.satyrn.papermc.api.storage.v1;
+package dev.satyrn.papermc.api.storage.v2;
 
-import dev.satyrn.papermc.api.configuration.v5.MySQLConfiguration;
+import dev.satyrn.papermc.api.configuration.v1.MySQLConfiguration;
+import dev.satyrn.papermc.api.storage.v1.ConnectionManager;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,11 +17,8 @@ import java.util.logging.Level;
  * Handles connections to a MySQL-like data source.
  *
  * @author Isabel Maskrey
- * @since 1.6.0
- *
- * @deprecated since 1.9.0. To be removed in a future version. Use {@link dev.satyrn.papermc.api.storage.v2.MySQLConnectionManager} instead.
+ * @since 1.9.0
  */
-@Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings({"unused", "ClassCanBeRecord"})
 public class MySQLConnectionManager implements ConnectionManager {
     private final transient @NotNull Plugin plugin;
