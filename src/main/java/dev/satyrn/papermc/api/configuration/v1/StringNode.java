@@ -19,7 +19,7 @@ public class StringNode extends ConfigurationNode<String> {
      * @since 1.0-SNAPSHOT
      */
     public StringNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**

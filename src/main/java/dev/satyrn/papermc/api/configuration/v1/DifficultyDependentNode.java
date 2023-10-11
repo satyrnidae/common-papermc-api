@@ -23,7 +23,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      */
     protected DifficultyDependentNode(@NotNull ConfigurationNode<?> parent,
                                       @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**

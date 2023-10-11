@@ -29,7 +29,7 @@ public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<
      * @since 1.3-SNAPSHOT
      */
     public TypedMapListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**
@@ -52,10 +52,8 @@ public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<
                     newItem.put(key, value);
                 } catch (ClassCastException | IllegalArgumentException ex) {
                     final Plugin plugin = this.getPlugin();
-                    if (plugin != null) {
-                        plugin.getLogger()
+                        this.getLogger()
                                 .log(Level.WARNING, "[Configuration] Unable to read value in {0}: {1}. This entry has been discarded.", new Object[]{this.getValuePath(), ex.getMessage()});
-                    }
                 }
             }
             result.add(newItem);

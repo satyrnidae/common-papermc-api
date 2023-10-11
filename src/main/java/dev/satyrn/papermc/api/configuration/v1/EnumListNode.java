@@ -24,7 +24,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @since 1.0-SNAPSHOT
      */
     public EnumListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**
@@ -43,11 +43,8 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
                     final E parsedValue = this.parse(value);
                     list.add(parsedValue);
                 } catch (IllegalArgumentException ex) {
-                    if (this.getPlugin() != null) {
-                        this.getPlugin()
-                                .getLogger()
+                        this.getLogger()
                                 .log(Level.WARNING, String.format("[Configuration] The list %s contains an invalid value: %s. This entry has been discarded!", this.getValuePath(), value));
-                    }
                 }
             }
         }

@@ -23,7 +23,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      * @since 1.0-SNAPSHOT
      */
     public MapListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**

@@ -21,7 +21,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @since 1.0-SNAPSHOT
      */
     public EnumNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**
@@ -37,11 +37,8 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
             try {
                 return this.parse(enumName);
             } catch (IllegalArgumentException ex) {
-                if (this.getPlugin() != null) {
-                    this.getPlugin()
-                            .getLogger()
+                    this.getLogger()
                             .log(Level.WARNING, String.format("[Configuration] Invalid value for %s: %s. The default value %s will be used instead.", this.getValuePath(), enumName, this.defaultValue()));
-                }
                 return this.getDefault();
             }
         }

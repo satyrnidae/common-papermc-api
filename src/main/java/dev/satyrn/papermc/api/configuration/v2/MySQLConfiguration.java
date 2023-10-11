@@ -114,7 +114,7 @@ public class MySQLConfiguration extends ContainerNode {
      * @param parent The parent container.
      * @since 1.6.0
      */
-    public MySQLConfiguration(ConfigurationContainer parent) {
+    public MySQLConfiguration(ConfigurationNode<?> parent) {
         super(parent, "mysql");
     }
 }

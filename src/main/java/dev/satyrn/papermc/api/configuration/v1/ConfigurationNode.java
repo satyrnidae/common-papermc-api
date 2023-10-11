@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Represents a single configuration node. Cannot contain sub-nodes or containers.
@@ -23,12 +24,8 @@ public abstract class ConfigurationNode<T> {
     private final @Nullable ConfigurationNode<?> parent;
     // The name of the node.
     private final @Nullable String name;
-
-    // The configuration file instance.
-    private final @NotNull Configuration config;
     // The plugin. Cannot be null.
     private final @NotNull Plugin plugin;
-
     // All child objects added to this node.
     private final @NotNull Collection<ConfigurationNode<?>> children = new ArrayList<>();
 
@@ -39,7 +36,10 @@ public abstract class ConfigurationNode<T> {
      * @param name   The node name.
      * @param config The configuration instance.
      * @since 1.0-SNAPSHOT
+     *
+     * @deprecated since 1.9.0.
      */
+    @Deprecated(since = "1.9.0")
     protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
         this(parent.getPlugin(), parent, name, config);
     }
@@ -52,12 +52,37 @@ public abstract class ConfigurationNode<T> {
      * @param name   The node name.
      * @param config The configuration instance.
      * @since 1.6.0
+     *
+     * @deprecated since 1.9.0
      */
+    @Deprecated(since = "1.9.0")
     protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
+        this(plugin, parent, name);
+    }
+
+    /**
+     * Initializes a new Configuration node.
+     *
+     * @param parent The parent node.
+     * @param name   The node name.
+     * @since 1.0-SNAPSHOT
+     */
+    protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
+        this(parent.getPlugin(), parent, name);
+    }
+
+    /**
+     * Initializes a new Configuration node.
+     *
+     * @param plugin The plugin instance.
+     * @param parent The parent node.
+     * @param name   The node name.
+     * @since 1.6.0
+     */
+    protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name) {
         this.plugin = plugin;
         this.parent = parent;
         this.name = name;
-        this.config = config;
 
         if (this.isSubNode()) {
             this.parent.addChild(this);
@@ -83,7 +108,7 @@ public abstract class ConfigurationNode<T> {
      */
     @NotNull
     public Configuration getConfig() {
-        return config;
+        return plugin.getConfig();
     }
 
     /**
@@ -229,7 +254,7 @@ public abstract class ConfigurationNode<T> {
      * @since 1.9.0
      */
     public void setValue(@Nullable T value) {
-        this.config.set(this.getValuePath(), value == null ? this.defaultValue() : value);
+        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : value);
     }
 
     /**
@@ -330,7 +355,7 @@ public abstract class ConfigurationNode<T> {
      */
     public @NotNull List<String> getComments(boolean basePath) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
-        return this.config.getComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
+        return this.getConfig().getComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
     }
 
     /**
@@ -366,7 +391,7 @@ public abstract class ConfigurationNode<T> {
      */
     public @NotNull List<String> getInlineComments(boolean basePath) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
-        return this.config.getInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
+        return this.getConfig().getInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
     }
 
     /**
@@ -406,7 +431,7 @@ public abstract class ConfigurationNode<T> {
      */
     public void setComments(boolean basePath, String... comments) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
-        this.config.setComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
+        this.getConfig().setComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
     }
 
     /**
@@ -445,6 +470,30 @@ public abstract class ConfigurationNode<T> {
      */
     public void setInlineComments(boolean basePath, String... comments) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
-        this.config.setInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
+        this.getConfig().setInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
+    }
+
+    /**
+     * Returns the plugin logger associated with this server's logger. The
+     * returned logger automatically tags all log messages with the plugin's
+     * name.
+     *
+     * @return Logger associated with this plugin
+     *
+     * @since 1.9.0
+     */
+    public @NotNull Logger getLogger() {
+        return plugin.getLogger();
+    }
+
+    /**
+     * Returns a new slf4j Logger instance associated with the plugin.
+     *
+     * @return A new slf4j Logger associated with the plugin.
+     *
+     * @since 1.9.0
+     */
+    public @NotNull org.slf4j.Logger getSLF4JLogger() {
+        return plugin.getSLF4JLogger();
     }
 }

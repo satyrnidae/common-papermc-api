@@ -1,7 +1,5 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
-import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +20,7 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
      * @since 1.9.0
      */
     protected ContainerNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**
@@ -32,19 +30,7 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
      * @since 1.9.0
      */
     protected ContainerNode(final @NotNull Plugin plugin) {
-        super(plugin, null, null, plugin.getConfig());
-    }
-
-    /**
-     * Initializes the node as a root node.
-     *
-     * @param plugin The plugin instance.
-     * @param config The configuration instance.
-     *
-     * @since 1.9.0
-     */
-    protected ContainerNode(final @NotNull Plugin plugin, final @NotNull Configuration config) {
-        super(plugin, null, null, config);
+        super(plugin, null, null);
     }
 
     /**

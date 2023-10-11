@@ -18,7 +18,7 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
      * @since 1.0-SNAPSHOT
      */
     public BooleanNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
     }
 
     /**

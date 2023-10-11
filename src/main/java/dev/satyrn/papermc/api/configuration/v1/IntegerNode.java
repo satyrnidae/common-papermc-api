@@ -24,7 +24,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.0-SNAPSHOT
      */
     public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
         this.minValue = Integer.MIN_VALUE;
         this.maxValue = Integer.MAX_VALUE;
     }
@@ -39,7 +39,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.6.2
      */
     public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, int minValue, int maxValue) {
-        super(parent, name, parent.getConfig());
+        super(parent, name);
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
