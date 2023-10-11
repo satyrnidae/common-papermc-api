@@ -1,7 +1,6 @@
 package dev.satyrn.papermc.api.configuration.v4;
 
 import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a class which requires access to a Configuration Container and should be able to refresh its state when
@@ -14,11 +13,4 @@ import org.jetbrains.annotations.NotNull;
  */
 @Deprecated(since = "1.6.1", forRemoval = true)
 @SuppressWarnings("unused")
-public interface ConfigurationConsumer<T extends ConfigurationContainer> {
-    /**
-     * Reloads the configuration file.
-     *
-     * @param configuration The configuration file.
-     */
-    void reloadConfiguration(final @NotNull T configuration);
-}
+public interface ConfigurationConsumer<T extends ConfigurationContainer> extends dev.satyrn.papermc.api.configuration.v1.ConfigurationConsumer<T> { }

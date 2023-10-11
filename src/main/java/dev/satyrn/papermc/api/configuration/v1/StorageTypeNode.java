@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.9.0
  */
 @SuppressWarnings("unused")
-public final class StorageTypeNode extends EnumNode<StorageType> {
+public class StorageTypeNode extends EnumNode<StorageType> {
     /**
      * Creates a new configuration node with a Log Level value.
      *

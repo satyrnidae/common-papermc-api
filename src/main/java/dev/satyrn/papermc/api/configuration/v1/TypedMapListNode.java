@@ -39,7 +39,7 @@ public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<
      * @since 1.3-SNAPSHOT
      */
     public @NotNull List<Map<K, V>> value() {
-        final List<Map<?, ?>> mapList = this.getConfig().getMapList(this.getPath());
+        final List<Map<?, ?>> mapList = this.getConfig().getMapList(this.getValuePath());
         final List<Map<K, V>> result = new ArrayList<>();
         for (Map<?, ?> item : mapList) {
             Map<K, V> newItem = new HashMap<>();
@@ -54,7 +54,7 @@ public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<
                     final Plugin plugin = this.getPlugin();
                     if (plugin != null) {
                         plugin.getLogger()
-                                .log(Level.WARNING, "[Configuration] Unable to read value in {0}: {1}. This entry has been discarded.", new Object[]{this.getPath(), ex.getMessage()});
+                                .log(Level.WARNING, "[Configuration] Unable to read value in {0}: {1}. This entry has been discarded.", new Object[]{this.getValuePath(), ex.getMessage()});
                     }
                 }
             }

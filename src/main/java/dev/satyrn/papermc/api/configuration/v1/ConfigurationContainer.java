@@ -19,7 +19,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param parent The node parent.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationContainer(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    protected ConfigurationContainer(final @NotNull ConfigurationContainer parent, final @Nullable String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -32,7 +32,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      */
     @Deprecated
     protected ConfigurationContainer(final @NotNull Configuration config) {
-        super(null, null, "", config);
+        super(null, null, null, config);
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param plugin The plugin instance.
      */
     protected ConfigurationContainer(final @NotNull Plugin plugin) {
-        super(plugin, null, "", plugin.getConfig());
+        super(plugin, null, null, plugin.getConfig());
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @since 1.6.0
      */
     protected ConfigurationContainer(final @NotNull Plugin plugin, final @NotNull Configuration config) {
-        super(plugin, null, "", config);
+        super(plugin, null, null, config);
     }
 
     /**

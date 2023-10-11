@@ -53,7 +53,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
     @Override
     public final @NotNull Integer value() {
         return MathHelper.clamp(this.getConfig()
-                .getInt(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
+                .getInt(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**
@@ -75,7 +75,6 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      */
     @Override
     public void setValue(Integer value) {
-        this.getConfig().set(this.getPath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
-        this.getConfig().setComments(this.getPath(), this.getComments());
+        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
     }
 }

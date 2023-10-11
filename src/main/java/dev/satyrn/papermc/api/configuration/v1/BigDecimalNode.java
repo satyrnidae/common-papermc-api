@@ -31,7 +31,7 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
      */
     @Override
     public final @NotNull BigDecimal value() {
-        final String stringValue = this.getConfig().getString(this.getPath());
+        final String stringValue = this.getConfig().getString(this.getValuePath());
         if (stringValue == null) {
             return this.defaultValue();
         }

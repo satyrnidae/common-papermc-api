@@ -34,7 +34,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      */
     @Override
     public @NotNull List<Map<?, ?>> value() {
-        return this.getConfig().getMapList(this.getPath());
+        return this.getConfig().getMapList(this.getValuePath());
     }
 
     /**

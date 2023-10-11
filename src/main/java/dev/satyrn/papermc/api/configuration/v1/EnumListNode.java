@@ -36,7 +36,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
     @Override
     public @NotNull List<E> value() {
         final @NotNull List<E> list = new ArrayList<>();
-        final @NotNull List<String> values = this.getConfig().getStringList(this.getPath());
+        final @NotNull List<String> values = this.getConfig().getStringList(this.getValuePath());
         for (final @Nullable String value : values) {
             if (value != null && !value.isEmpty()) {
                 try {
@@ -46,7 +46,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
                     if (this.getPlugin() != null) {
                         this.getPlugin()
                                 .getLogger()
-                                .log(Level.WARNING, String.format("[Configuration] The list %s contains an invalid value: %s. This entry has been discarded!", this.getPath(), value));
+                                .log(Level.WARNING, String.format("[Configuration] The list %s contains an invalid value: %s. This entry has been discarded!", this.getValuePath(), value));
                     }
                 }
             }

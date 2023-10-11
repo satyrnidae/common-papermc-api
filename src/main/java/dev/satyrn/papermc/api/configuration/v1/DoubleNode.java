@@ -53,7 +53,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
     @Override
     public final @NotNull Double value() {
         return MathHelper.clampd(this.getConfig()
-                .getDouble(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
+                .getDouble(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**
@@ -75,7 +75,6 @@ public class DoubleNode extends ConfigurationNode<Double> {
      */
     @Override
     public void setValue(Double value) {
-        this.getConfig().set(this.getPath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
-        this.getConfig().setComments(this.getPath(), this.getComments());
+        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
     }
 }

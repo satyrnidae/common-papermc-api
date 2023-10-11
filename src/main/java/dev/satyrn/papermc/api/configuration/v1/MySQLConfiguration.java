@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Isabel Maskrey
  * @since 1.9.0
  */
-public final class MySQLConfiguration extends ConfigurationContainer {
+public class MySQLConfiguration extends ConfigurationContainer {
     /**
      * Whether the MySQL server backend should be enabled.
      *

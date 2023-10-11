@@ -30,7 +30,7 @@ public class StringNode extends ConfigurationNode<String> {
      */
     @Override
     public @Nullable String value() {
-        return this.getConfig().getString(this.getPath(), this.defaultValue());
+        return this.getConfig().getString(this.getValuePath(), this.defaultValue());
     }
 
     /**

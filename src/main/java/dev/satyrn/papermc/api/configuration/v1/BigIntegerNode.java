@@ -32,7 +32,7 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      */
     @Override
     public final @NotNull BigInteger value() {
-        final String stringValue = this.getConfig().getString(this.getPath());
+        final String stringValue = this.getConfig().getString(this.getValuePath());
         if (stringValue == null) {
             return this.defaultValue();
         }

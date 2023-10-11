@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,12 +16,11 @@ import java.util.Objects;
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
  */
-@SuppressWarnings("unused")
 public abstract class ConfigurationNode<T> {
     // The parent configuration container.
-    private final @Nullable ConfigurationContainer parent;
+    private final @Nullable ConfigurationNode<?> parent;
     // The name of the node.
-    private final @NotNull String name;
+    private final @Nullable String name;
 
     // The configuration file instance.
     private final @NotNull Configuration config;
@@ -40,7 +38,7 @@ public abstract class ConfigurationNode<T> {
      * @param config The configuration instance.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationNode(final @Nullable ConfigurationContainer parent, final @NotNull String name, final @NotNull Configuration config) {
+    protected ConfigurationNode(final @Nullable ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
         this(parent == null ? null : parent.getPlugin(), parent, name, config);
     }
 
@@ -52,22 +50,15 @@ public abstract class ConfigurationNode<T> {
      * @param name   The node name.
      * @param config The configuration instance.
      * @since 1.6.0
-     * @throws IllegalArgumentException if the name is empty, but the node is added to a parent
-     * @throws IllegalArgumentException if the name is not empty, but the node is not added to a parent
      */
-    protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationContainer parent, @NotNull final String name, @NotNull final Configuration config) {
+    protected ConfigurationNode(final @Nullable Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
         this.plugin = plugin;
         this.parent = parent;
         this.name = name;
         this.config = config;
 
-        if (parent != null) {
-            if (this.name.isBlank()) {
-                throw new IllegalArgumentException("A non-named node cannot be added to a parent!");
-            }
-            parent.addChild(this);
-        } else if (!this.name.isBlank()) {
-            throw new IllegalArgumentException("A named node cannot be used as a root node.");
+        if (this.isSubNode()) {
+            this.parent.addChild(this);
         }
     }
 
@@ -99,7 +90,7 @@ public abstract class ConfigurationNode<T> {
      * @return The name of the node.
      * @since 1.0-SNAPSHOT
      */
-    @NotNull
+    @Nullable
     public String getName() {
         return this.name;
     }
@@ -109,10 +100,13 @@ public abstract class ConfigurationNode<T> {
      *
      * @return The full node path.
      * @since 1.0-SNAPSHOT
+     *
+     * @deprecated since 1.9.0. Use {@link ConfigurationNode getBasePath} or {@link ConfigurationNode getValuePath} instead.
      */
+    @Deprecated(since = "1.9.0")
     @NotNull
     public String getPath() {
-        return this.getPath(new StringBuilder());
+        return this.getBasePath(new StringBuilder());
     }
 
     /**
@@ -121,21 +115,81 @@ public abstract class ConfigurationNode<T> {
      * @param stringBuilder The StringBuilder with which to build out the full node path.
      * @return The full node path.
      * @since 1.0-SNAPSHOT
+     *
+     * @deprecated since 1.9.0. Use {@link ConfigurationNode getBasePath} or {@link ConfigurationNode getValuePath} instead.
      */
+    @Deprecated(since = "1.9.0")
     @NotNull
     public final String getPath(@NotNull final StringBuilder stringBuilder) {
-        if (parent != null) {
-            parent.getPath(stringBuilder);
-            stringBuilder.append('.');
-        }
-        stringBuilder.append(this.getName());
+        return this.getBasePath(stringBuilder);
+    }
+
+    /**
+     * Gets the path of the node that contains the value.
+     * May or may not match the value of {@link ConfigurationNode getNodePath}.
+     *
+     * @return The full path of the node which contains the value.
+     *
+     * @since 1.9.0
+     */
+    @NotNull
+    public final String getValuePath() {
+        return this.getValuePath(new StringBuilder());
+    }
+
+    /**
+     * Gets the path of the node that contains the value.
+     * May or may not match the value of {@link ConfigurationNode getNodePath}.
+     *
+     * @param stringBuilder The string builder with which to build out the full path name.
+     * @return The full path of the node which contains the value.
+     *
+     * @since 1.9.0
+     */
+    @NotNull
+    public final String getValuePath(@NotNull final StringBuilder stringBuilder) {
+        this.getBasePath(stringBuilder);
         // If the node contains children, but still stores a value, it must contain a value node
         // If the name of the node is empty then it is a root node.
-        if (!this.getName().isBlank() && !this.children.isEmpty()) {
-            stringBuilder.append(".value");
+        if (this.hasChildren()) {
+            if (!stringBuilder.isEmpty()) {
+                stringBuilder.append(".");
+            }
+            stringBuilder.append(this.getValueNodeName());
         }
         return stringBuilder.toString();
     }
+
+    /**
+     * Gets the path of the base node.
+     * May or may not match the value of {@link ConfigurationNode getValuePath} if this node contains children.
+     *
+     * @param stringBuilder The string builder with which to build out the full path name.
+     * @return The full path of this node.
+     *
+     * @since 1.9.0
+     */
+    @NotNull
+    public final String getBasePath(@NotNull final StringBuilder stringBuilder) {
+        if (this.isSubNode()) {
+            parent.getBasePath(stringBuilder);
+            if (!stringBuilder.isEmpty()) {
+                stringBuilder.append('.');
+            }
+        }
+        stringBuilder.append(this.getName());
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Gets the name of the value node, which will be used if this node contains children and a value.
+     * Defaults to "value" for most node types.
+     *
+     * @return The name of the value node.
+     * @since 1.9.0
+     */
+    public @NotNull String getValueNodeName() { return "value"; }
 
     /**
      * Returns the value of the node as a string.
@@ -170,20 +224,8 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.0
      */
-    public void setValue(T value) {
-        this.config.set(this.getPath(), value == null ? this.defaultValue() : value);
-        this.config.setComments(this.getPath(), this.getComments());
-    }
-
-    /**
-     * Gets a list of comments.
-     *
-     * @return A list of the comments for the config node.
-     *
-     * @since 1.9.0
-     */
-    public @Nullable List<String> getComments() {
-        return null;
+    public void setValue(@Nullable T value) {
+        this.config.set(this.getValuePath(), value == null ? this.defaultValue() : value);
     }
 
     /**
@@ -203,24 +245,26 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.0
      */
-    protected void addChild(ConfigurationNode<?> configurationNode) {
-        children.add(configurationNode);
+    protected final void addChild(@NotNull ConfigurationNode<?> configurationNode) {
+        this.children.add(configurationNode);
     }
 
     /**
-     * Sets the comment list at the specified path.
-     * <p>
-     * If value is null, the comments will be removed. A null entry is an empty
-     * line and an empty String entry is an empty comment line. If the path does
-     * not exist, no comments will be set. Any existing comments will be
-     * replaced, regardless of what the new comments are.
-     * <p>
-     * Some implementations may have limitations on what persists. See their
-     * individual javadocs for details.
+     * Whether the configuration node contains children.
+     *
+     * @return {@code true} if the child list is not empty; otherwise, {@code false}
      *
      * @since 1.9.0
      */
-    public void setComments() {
-        config.setComments(this.getPath(), this.getComments());
+    public final boolean hasChildren() {
+        return !this.children.isEmpty();
+    }
+
+    /**
+     * Whether the configuration node is a root node.
+     * @return {@code true} if the root node name is null or blank; otherwise, {@code false}
+     */
+    public final boolean isSubNode() {
+        return this.parent != null;
     }
 }
