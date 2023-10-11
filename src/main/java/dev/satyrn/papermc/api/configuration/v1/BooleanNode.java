@@ -17,7 +17,7 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
      * @param name   The name of the configuration node.
      * @since 1.0-SNAPSHOT
      */
-    public BooleanNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public BooleanNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

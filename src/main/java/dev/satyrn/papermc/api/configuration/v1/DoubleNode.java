@@ -23,7 +23,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param name   The node name.
      * @since 1.0-SNAPSHOT
      */
-    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
         this.minValue = Double.MIN_VALUE;
         this.maxValue = Double.MAX_VALUE;
@@ -38,7 +38,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param maxValue The maximum value of the node.
      * @since 1.6.2
      */
-    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, final double minValue, final double maxValue) {
+    public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, final double minValue, final double maxValue) {
         super(parent, name, parent.getConfig());
         this.minValue = minValue;
         this.maxValue = maxValue;

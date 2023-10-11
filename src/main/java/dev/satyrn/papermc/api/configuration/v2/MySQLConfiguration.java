@@ -1,5 +1,6 @@
-package dev.satyrn.papermc.api.configuration.v1;
+package dev.satyrn.papermc.api.configuration.v2;
 
+import dev.satyrn.papermc.api.configuration.v1.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -8,9 +9,8 @@ import org.jetbrains.annotations.NotNull;
  * @author Isabel Maskrey
  * @since 1.9.0
  */
-
-@Deprecated(since = "1.9.0")
-public class MySQLConfiguration extends ConfigurationContainer {
+@SuppressWarnings("unused")
+public class MySQLConfiguration extends ContainerNode {
     /**
      * Whether the MySQL server backend should be enabled.
      *
@@ -88,7 +88,7 @@ public class MySQLConfiguration extends ConfigurationContainer {
 
     /**
      * Optional prefix for any created table's names.
-     *
+      *
      * @since 1.6.0
      */
     @SuppressWarnings("unused")
@@ -114,7 +114,7 @@ public class MySQLConfiguration extends ConfigurationContainer {
      * @param parent The parent container.
      * @since 1.6.0
      */
-    public MySQLConfiguration(ConfigurationNode<?> parent) {
+    public MySQLConfiguration(ConfigurationContainer parent) {
         super(parent, "mysql");
     }
 }

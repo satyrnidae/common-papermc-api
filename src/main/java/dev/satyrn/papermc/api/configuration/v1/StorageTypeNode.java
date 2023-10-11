@@ -18,7 +18,7 @@ public class StorageTypeNode extends EnumNode<StorageType> {
      * @param name   The node's name.
      * @since 1.6.0
      */
-    public StorageTypeNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
+    public StorageTypeNode(@NotNull ConfigurationNode<?> parent, @NotNull String name) {
         super(parent, name);
     }
 

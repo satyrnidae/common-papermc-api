@@ -23,7 +23,7 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public EnumListNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public EnumListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

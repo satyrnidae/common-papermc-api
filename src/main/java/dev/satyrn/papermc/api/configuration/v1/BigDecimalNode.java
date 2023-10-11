@@ -19,7 +19,7 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
      * @param name   The node's name.
      * @since 1.3-SNAPSHOT
      */
-    public BigDecimalNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public BigDecimalNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

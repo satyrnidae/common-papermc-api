@@ -28,7 +28,7 @@ public abstract class TypedMapListNode<K, V> extends ConfigurationNode<List<Map<
      * @param name   The name of the node.
      * @since 1.3-SNAPSHOT
      */
-    public TypedMapListNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public TypedMapListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 

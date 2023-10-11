@@ -10,7 +10,10 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
+ *
+ * @deprecated since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead.
  */
+@Deprecated(since = "1.9.0")
 @SuppressWarnings("unused")
 public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
     /**
@@ -19,7 +22,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param parent The node parent.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationContainer(final @NotNull ConfigurationContainer parent, final @Nullable String name) {
+    protected ConfigurationContainer(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
         super(parent, name, parent.getConfig());
     }
 

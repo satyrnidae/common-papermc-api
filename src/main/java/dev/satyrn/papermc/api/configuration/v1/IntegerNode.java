@@ -23,7 +23,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
         this.minValue = Integer.MIN_VALUE;
         this.maxValue = Integer.MAX_VALUE;
@@ -38,7 +38,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param maxValue The maximum value allowed by the node.
      * @since 1.6.2
      */
-    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, int minValue, int maxValue) {
+    public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, int minValue, int maxValue) {
         super(parent, name, parent.getConfig());
         this.minValue = minValue;
         this.maxValue = maxValue;
