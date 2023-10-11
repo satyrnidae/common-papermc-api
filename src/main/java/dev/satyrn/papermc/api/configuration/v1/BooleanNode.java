@@ -17,7 +17,7 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
      * @param name   The name of the configuration node.
      * @since 1.0-SNAPSHOT
      */
-    public BooleanNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public BooleanNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -29,7 +29,7 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
      */
     @Override
     public final @NotNull Boolean value() {
-        return this.getConfig().getBoolean(this.getPath(), this.defaultValue());
+        return this.getConfig().getBoolean(this.getValuePath(), this.defaultValue());
     }
 
     /**
@@ -41,5 +41,17 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
     @Override
     public @NotNull Boolean defaultValue() {
         return false;
+    }
+
+    /**
+     * Gets the name of the "value" node, which will be used if this node contains children and a value.
+     * Defaults to "enabled" for boolean nodes.
+     *
+     * @return The name of the value node.
+     * @since 1.9.0
+     */
+    @Override
+    public @NotNull String getValueNodeName() {
+        return "enabled";
     }
 }

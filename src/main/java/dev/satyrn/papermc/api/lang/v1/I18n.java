@@ -4,9 +4,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -29,20 +28,22 @@ public class I18n {
     public static final @NotNull Locale DEFAULT_LOCALE = Locale.US;
     // Double apostrophe pattern
     private static final @NotNull Pattern DOUBLE_APOS = Pattern.compile("''");
+    // The instance.
+    private static @Nullable I18n instance;
     // The default resource bundle
     private final transient @NotNull ResourceBundle defaultBundle;
     // The plugin.
     private final transient @NotNull Plugin plugin;
     // Cache for message format instances.
     private final transient @NotNull HashMap<String, MessageFormat> messageFormatCache = new HashMap<>();
-    // The current locale's resource bundle.
-    private transient @Nullable ResourceBundle localeBundle;
-    // The current locale to use for translation.
-    private transient @NotNull Locale currentLocale = DEFAULT_LOCALE;
     // The base name of the internationalization instance.
     private final transient @NotNull String baseName;
-    // The instance.
-    private static @Nullable I18n instance;
+    // The current locale's resource bundle.
+    private transient @Nullable ResourceBundle localeBundle;
+    // A file resource bundle.
+    private transient @Nullable ResourceBundle fileBundle;
+    // The current locale to use for translation.
+    private transient @NotNull Locale currentLocale = DEFAULT_LOCALE;
 
     /**
      * Initializes a new I18n instance.
@@ -60,7 +61,7 @@ public class I18n {
     /**
      * Initializes a new I18n instance.
      *
-     * @param plugin The plugin instance.
+     * @param plugin   The plugin instance.
      * @param baseName The default resource bundle.
      */
     public I18n(final @NotNull Plugin plugin, final @NotNull String baseName) {
@@ -71,6 +72,7 @@ public class I18n {
 
     /**
      * Gets the current I18n instance.
+     *
      * @return The current I18n instance.
      */
     public static @Nullable I18n getInstance() {
@@ -142,7 +144,24 @@ public class I18n {
                 this.currentLocale = new Locale(parts[0], parts[parts.length - 1]);
             }
         }
-        this.localeBundle = this.getResourceBundleForLocale(this.currentLocale);
+
+        try {
+            this.localeBundle = this.getResourceBundleForLocale(this.currentLocale);
+        } catch (MissingResourceException ex) {
+            this.getPlugin()
+                    .getLogger()
+                    .log(Level.FINE, "[Localization] Failed to load internal locale bundle for current locale {0}.", new Object[]{this.currentLocale});
+            this.localeBundle = null;
+        }
+
+        try {
+            this.fileBundle = ResourceBundle.getBundle(this.baseName, this.currentLocale, new FileResourceClassLoader(I18n.class.getClassLoader(), this.plugin), new Utf8LangFileControl());
+        } catch (MissingResourceException ex) {
+            this.getPlugin()
+                    .getLogger()
+                    .log(Level.FINE, "[Localization] Failed to load custom locale bundle for current locale {0}.", new Object[]{this.currentLocale});
+            this.fileBundle = null;
+        }
     }
 
     /**
@@ -155,6 +174,7 @@ public class I18n {
     protected @NotNull ResourceBundle getResourceBundleForLocale(final @NotNull Locale locale) {
         return ResourceBundle.getBundle(this.baseName, locale, new Utf8LangFileControl());
     }
+
     /**
      * Enables the internationalization handler.
      *
@@ -181,17 +201,28 @@ public class I18n {
      * @since 1.1-SNAPSHOT
      */
     private @NotNull String translate(@NotNull final String key) {
+        if (this.fileBundle != null) {
+            try {
+                return this.fileBundle.getString(key);
+            } catch (final MissingResourceException ex) {
+                this.plugin.getLogger()
+                        .log(Level.FINE, "[I18n] Missing translation key \"{0}\" in custom resource file \"{1}{2}{3}.lang\"; falling back to internal locale.", new Object[]{ex.getKey(), this.getPlugin()
+                                .getDataFolder().getPath(), File.separator, this.fileBundle.getLocale()});
+            }
+        }
         if (this.localeBundle != null) {
             try {
                 return this.localeBundle.getString(key);
             } catch (MissingResourceException ex) {
-                this.plugin.getLogger().log(Level.WARNING, String.format("Missing translation key \"%s\" in resource file \"%s.lang\"; falling back to default.", ex.getKey(), localeBundle.getLocale()), ex);
+                this.plugin.getLogger()
+                        .log(Level.FINE, "[I18n] Missing translation key \"{0}\" in resource file \"{1}.lang\"; falling back to default.", new Object[]{ex.getKey(), localeBundle.getLocale()});
             }
         }
         try {
             return this.defaultBundle.getString(key);
         } catch (MissingResourceException ex) {
-            this.plugin.getLogger().log(Level.SEVERE, String.format("Missing DEFAULT translation key \"%s\" in resource file \"%s.lang\"!", ex.getKey(), defaultBundle.getLocale()), ex);
+            this.plugin.getLogger()
+                    .log(Level.WARNING, "[I18n] Missing default translation key \"{0}\" in resource file \"{1}.lang\"!", new Object[]{ex.getKey(), defaultBundle.getLocale()});
             return key;
         }
     }
@@ -212,13 +243,15 @@ public class I18n {
                 messageFormat = new MessageFormat(translatedKey);
                 this.messageFormatCache.put(translatedKey, messageFormat);
             } catch (IllegalArgumentException ex) {
-                this.plugin.getLogger().log(Level.WARNING, String.format("Invalid translation key for \"%s\": %s", key, ex.getMessage()), ex);
+                this.plugin.getLogger()
+                        .log(Level.WARNING, String.format("[I18n] Invalid translation key for \"%s\": %s", key, ex.getMessage()), ex);
                 translatedKey = translatedKey.replaceAll("\\{(\\D*?)}", "\\[$1\\]");
                 try {
                     messageFormat = new MessageFormat(translatedKey);
                     this.messageFormatCache.put(translatedKey, messageFormat);
                 } catch (IllegalArgumentException ex1) {
-                    this.plugin.getLogger().log(Level.SEVERE, String.format("Invalid translation key for \"%s\": %s", key, ex.getMessage()), ex);
+                    this.plugin.getLogger()
+                            .log(Level.SEVERE, String.format("[I18n] Invalid translation key for \"%s\": %s", key, ex.getMessage()), ex);
                     return key;
                 }
             }
@@ -305,6 +338,111 @@ public class I18n {
             }
 
             return sb.toString();
+        }
+    }
+
+    /**
+     * Custom class loader which loads locale bundles from the plugin data folder.
+     *
+     * @author Isabel Maskrey
+     * @since 1.8.0
+     */
+    public static final class FileResourceClassLoader extends ClassLoader {
+        // The plugin.
+        private final @NotNull Plugin plugin;
+
+        /**
+         * Creates a new file resource class loader.
+         *
+         * @param classLoader The class loader.
+         * @param plugin      The plugin.
+         */
+        public FileResourceClassLoader(final @NotNull ClassLoader classLoader, final @NotNull Plugin plugin) {
+            super(classLoader);
+            this.plugin = plugin;
+        }
+
+        /**
+         * Finds the resource with the given name.  A resource is some data
+         * (images, audio, text, etc) that can be accessed by class code in a way
+         * that is independent of the location of the code.
+         *
+         * <p> The name of a resource is a '{@code /}'-separated path name that
+         * identifies the resource. </p>
+         *
+         * <p> Resources in named modules are subject to the encapsulation rules
+         * specified by {@link Module#getResourceAsStream Module.getResourceAsStream}.
+         * Additionally, and except for the special case where the resource has a
+         * name ending with "{@code .class}", this method will only find resources in
+         * packages of named modules when the package is {@link Module#isOpen(String)
+         * opened} unconditionally (even if the caller of this method is in the
+         * same module as the resource). </p>
+         *
+         * @param name The resource name
+         * @return {@code URL} object for reading the resource; {@code null} if
+         * the resource could not be found, a {@code URL} could not be
+         * constructed to locate the resource, the resource is in a package
+         * that is not opened unconditionally, or access to the resource is
+         * denied by the security manager.
+         * @throws NullPointerException If {@code name} is {@code null}
+         * When overriding this method it is recommended that an implementation
+         * ensures that any delegation is consistent with the {@link
+         * #getResources(String) getResources(String)} method.
+         * @since 1.8.0
+         */
+        @Nullable
+        @Override
+        public URL getResource(final @NotNull String name) {
+            final File file = new File(this.plugin.getDataFolder().getPath(), name);
+            if (file.exists()) {
+                try {
+                    return file.toURI().toURL();
+                } catch (final MalformedURLException ex) {
+                    this.plugin.getLogger()
+                            .log(Level.FINE, "[I18n] Failed to load resource {0} from data folder {1}.", new Object[]{name, this.plugin.getDataFolder().getPath()});
+                    this.plugin.getLogger().log(Level.FINER, ex.getMessage(), ex);
+                }
+            }
+
+            return super.getResource(name);
+        }
+
+        /**
+         * Returns an input stream for reading the specified resource.
+         *
+         * <p> The search order is described in the documentation for {@link
+         * #getResource(String)}.  </p>
+         *
+         * <p> Resources in named modules are subject to the encapsulation rules
+         * specified by {@link Module#getResourceAsStream Module.getResourceAsStream}.
+         * Additionally, and except for the special case where the resource has a
+         * name ending with "{@code .class}", this method will only find resources in
+         * packages of named modules when the package is {@link Module#isOpen(String)
+         * opened} unconditionally. </p>
+         *
+         * @param name The resource name
+         * @return An input stream for reading the resource; {@code null} if the
+         * resource could not be found, the resource is in a package that
+         * is not opened unconditionally, or access to the resource is
+         * denied by the security manager.
+         * @throws NullPointerException If {@code name} is {@code null}
+         * @since 1.8.0
+         */
+        @Nullable
+        @Override
+        public InputStream getResourceAsStream(String name) {
+            final File file = new File(this.plugin.getDataFolder().getPath(), name);
+            if (file.exists()) {
+                try {
+                    return new FileInputStream(file);
+                } catch (final FileNotFoundException ex) {
+                    this.plugin.getLogger()
+                            .log(Level.FINE, "[I18n] Failed to load resource {0} from data folder {1}.", new Object[]{name, this.plugin.getDataFolder().getPath()});
+                    this.plugin.getLogger().log(Level.FINER, ex.getMessage(), ex);
+                }
+            }
+
+            return super.getResourceAsStream(name);
         }
     }
 }

@@ -20,7 +20,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public EnumNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public EnumNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -32,7 +32,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      */
     @Override
     public final @NotNull E value() {
-        final @Nullable String enumName = this.getConfig().getString(this.getPath());
+        final @Nullable String enumName = this.getConfig().getString(this.getValuePath());
         if (enumName != null && !enumName.isEmpty()) {
             try {
                 return this.parse(enumName);
@@ -40,7 +40,7 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
                 if (this.getPlugin() != null) {
                     this.getPlugin()
                             .getLogger()
-                            .log(Level.WARNING, String.format("[Configuration] Invalid value for %s: %s. The default value %s will be used instead.", this.getPath(), enumName, this.defaultValue()));
+                            .log(Level.WARNING, String.format("[Configuration] Invalid value for %s: %s. The default value %s will be used instead.", this.getValuePath(), enumName, this.defaultValue()));
                 }
                 return this.getDefault();
             }

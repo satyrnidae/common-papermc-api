@@ -10,7 +10,10 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
+ *
+ * @deprecated since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead.
  */
+@Deprecated(since = "1.9.0")
 @SuppressWarnings("unused")
 public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
     /**
@@ -19,7 +22,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param parent The node parent.
      * @since 1.0-SNAPSHOT
      */
-    protected ConfigurationContainer(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    protected ConfigurationContainer(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -32,7 +35,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      */
     @Deprecated
     protected ConfigurationContainer(final @NotNull Configuration config) {
-        super(null, null, "", config);
+        super(null, null, null, config);
     }
 
     /**
@@ -40,7 +43,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param plugin The plugin instance.
      */
     protected ConfigurationContainer(final @NotNull Plugin plugin) {
-        super(plugin, null, "", plugin.getConfig());
+        super(plugin, null, null, plugin.getConfig());
     }
 
     /**
@@ -51,10 +54,11 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @since 1.6.0
      */
     protected ConfigurationContainer(final @NotNull Plugin plugin, final @NotNull Configuration config) {
-        super(plugin, null, "", config);
+        super(plugin, null, null, config);
     }
 
     /**
+     * Gets the current value of the node.
      * Always returns null for configuration containers.
      *
      * @return {@code null}
@@ -67,6 +71,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
 
     /**
      * Gets the default value of the node.
+     * Always returns null for configuration containers.
      *
      * @return The value.
      * @since 1.3-SNAPSHOT
@@ -75,4 +80,13 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
     public final @Nullable Void defaultValue() {
         return null;
     }
+
+    /**
+     * Sets the value of the node.
+     * @param value The value to set.
+     *
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Void value) { }
 }

@@ -23,7 +23,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
         this.minValue = Integer.MIN_VALUE;
         this.maxValue = Integer.MAX_VALUE;
@@ -38,7 +38,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param maxValue The maximum value allowed by the node.
      * @since 1.6.2
      */
-    public IntegerNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, int minValue, int maxValue) {
+    public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, int minValue, int maxValue) {
         super(parent, name, parent.getConfig());
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -53,7 +53,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
     @Override
     public final @NotNull Integer value() {
         return MathHelper.clamp(this.getConfig()
-                .getInt(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
+                .getInt(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**
@@ -65,5 +65,16 @@ public class IntegerNode extends ConfigurationNode<Integer> {
     @Override
     public @NotNull Integer defaultValue() {
         return 0;
+    }
+
+    /**
+     * Sets the value of the node.
+     *
+     * @param value The value to set.
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Integer value) {
+        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
     }
 }

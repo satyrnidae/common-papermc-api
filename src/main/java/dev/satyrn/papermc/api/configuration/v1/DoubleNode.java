@@ -23,7 +23,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param name   The node name.
      * @since 1.0-SNAPSHOT
      */
-    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
         this.minValue = Double.MIN_VALUE;
         this.maxValue = Double.MAX_VALUE;
@@ -38,7 +38,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param maxValue The maximum value of the node.
      * @since 1.6.2
      */
-    public DoubleNode(final @NotNull ConfigurationContainer parent, final @NotNull String name, final double minValue, final double maxValue) {
+    public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, final double minValue, final double maxValue) {
         super(parent, name, parent.getConfig());
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -53,7 +53,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
     @Override
     public final @NotNull Double value() {
         return MathHelper.clampd(this.getConfig()
-                .getDouble(this.getPath(), this.defaultValue()), this.minValue, this.maxValue);
+                .getDouble(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
     }
 
     /**
@@ -65,5 +65,16 @@ public class DoubleNode extends ConfigurationNode<Double> {
     @Override
     public @NotNull Double defaultValue() {
         return 0D;
+    }
+
+    /**
+     * Sets the value of the node.
+     *
+     * @param value The value to set.
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(Double value) {
+        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @author Isabel Maskrey
  * @since 1.0-SNAPSHOT
+ *
  */
 @SuppressWarnings("unused")
 public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
@@ -21,7 +22,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      * @param name   The node's name.
      * @since 1.0-SNAPSHOT
      */
-    public MapListNode(final @NotNull ConfigurationContainer parent, final @NotNull String name) {
+    public MapListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name, parent.getConfig());
     }
 
@@ -33,7 +34,7 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      */
     @Override
     public @NotNull List<Map<?, ?>> value() {
-        return this.getConfig().getMapList(this.getPath());
+        return this.getConfig().getMapList(this.getValuePath());
     }
 
     /**
