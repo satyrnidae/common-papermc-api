@@ -19,7 +19,8 @@ public class BigDecimalNode extends dev.satyrn.papermc.api.configuration.v1.BigD
      *
      * @param parent The parent node.
      * @param name   The node's name.
-     * @since 1.3-SNAPSHOT
+     *
+     * @since 1.3.0
      */
     public BigDecimalNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
         super(parent, name);

@@ -4,12 +4,11 @@ package dev.satyrn.papermc.api.util.v1;
  * Provides common math functions.
  *
  * @author Isabel Maskrey
- * @since 1.5-SNAPSHOT
+ * @since 1.5.0
  */
 @SuppressWarnings("unused")
 public final class MathHelper {
-    private MathHelper() {
-    }
+    private MathHelper() { }
 
     /**
      * Clamps a double between a min and max value.
@@ -17,8 +16,10 @@ public final class MathHelper {
      * @param d   The double value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
+     *
      * @return The clamped result.
-     * @since 1.5-SNAPSHOT
+     *
+     * @since 1.5.0
      */
     public static double clampd(double d, double min, double max) {
         return Math.max(min, Math.min(d, max));
@@ -30,8 +31,10 @@ public final class MathHelper {
      * @param f   The float value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
+     *
      * @return The clamped result.
-     * @since 1.5-SNAPSHOT
+     *
+     * @since 1.5.0
      */
     public static float clampf(float f, float min, float max) {
         return Math.max(min, Math.min(f, max));
@@ -43,8 +46,10 @@ public final class MathHelper {
      * @param i   The integer value.
      * @param min The minimum allowed value.
      * @param max The maximum allowed value.
+     *
      * @return The clamped result.
-     * @since 1.5-SNAPSHOT
+     *
+     * @since 1.5.0
      */
     public static int clamp(int i, int min, int max) {
         return Math.max(min, Math.min(i, max));
@@ -55,8 +60,10 @@ public final class MathHelper {
      *
      * @param value The value.
      * @param base  The base.
+     *
      * @return The resultant value.
-     * @since 1.5-SNAPSHOT
+     *
+     * @since 1.5.0
      */
     public static double logb(double value, double base) {
         return Math.log(value) / Math.log(base);

@@ -16,6 +16,7 @@ public interface ConnectionManager {
      * Opens a connection to the data source.
      *
      * @return The connection to the data source.
+     *
      * @since 1.6.0
      */
     @Nullable Connection connect();

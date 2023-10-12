@@ -7,8 +7,9 @@ import dev.satyrn.papermc.api.configuration.v1.ConfigurationContainer;
  * the configuration is reloaded from disk.
  *
  * @param <T> The configuration class
+ *
  * @author Isabel Maskrey
- * @since 1.4-SNAPSHOT
+ * @since 1.4.0
  * @deprecated Since 1.6.1. To be removed in a future version due to 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.ConfigurationConsumer} instead.
  */
 @Deprecated(since = "1.6.1", forRemoval = true)

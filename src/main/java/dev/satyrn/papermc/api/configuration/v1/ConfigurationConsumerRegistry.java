@@ -9,12 +9,14 @@ import java.util.List;
  * Models a registry for classes which listen to a configuration file for changes.
  *
  * @param <T> The configuration container type.
- * @since 1.9.0
+ *
+ * @author Isabel Maskrey
+ * @since 1.4.0
  * @deprecated Since 1.6.1. Use configuration node values directly.
  */
 @Deprecated(since = "1.6.1")
 @SuppressWarnings("unused")
-public abstract class ConfigurationConsumerRegistry<T extends ConfigurationContainer> {
+public abstract class ConfigurationConsumerRegistry<T extends ConfigurationNode<?>> {
     private final @NotNull List<ConfigurationConsumer<T>> consumers = new ArrayList<>();
 
     /**
@@ -23,7 +25,7 @@ public abstract class ConfigurationConsumerRegistry<T extends ConfigurationConta
      * @param instance The configuration consumer.
      * @param <K>      The consumer type.
      *
-     * @since 1.4-SNAPSHOT
+     * @since 1.4.0
      */
     public final <K extends ConfigurationConsumer<T>> void register(final @NotNull K instance) {
         if (!this.consumers.contains(instance)) {
@@ -36,7 +38,7 @@ public abstract class ConfigurationConsumerRegistry<T extends ConfigurationConta
      *
      * @param configuration The configuration instance.
      *
-     * @since 1.4-SNAPSHOT
+     * @since 1.4.0
      */
     public final void reload(final @NotNull T configuration) {
         for (final ConfigurationConsumer<T> instance : this.consumers) {

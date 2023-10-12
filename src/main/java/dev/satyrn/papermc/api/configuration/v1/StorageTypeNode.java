@@ -4,10 +4,10 @@ import dev.satyrn.papermc.api.storage.v1.StorageType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents a storage type node.
+ * Represents a configuration node which stores a {@link StorageType} value.
  *
  * @author Isabel Maskrey
- * @since 1.9.0
+ * @since 1.6.0
  */
 @SuppressWarnings("unused")
 public class StorageTypeNode extends EnumNode<StorageType> {
@@ -16,6 +16,7 @@ public class StorageTypeNode extends EnumNode<StorageType> {
      *
      * @param parent The parent container.
      * @param name   The node's name.
+     *
      * @since 1.6.0
      */
     public StorageTypeNode(@NotNull ConfigurationNode<?> parent, @NotNull String name) {
@@ -27,6 +28,7 @@ public class StorageTypeNode extends EnumNode<StorageType> {
      *
      * @param value The string value from the config file
      * @return The parsed enum value.
+     *
      * @throws IllegalArgumentException Thrown when the enum value fails to parse.
      * @since 1.6.0
      */
@@ -37,6 +39,8 @@ public class StorageTypeNode extends EnumNode<StorageType> {
 
     /**
      * Gets the default enum value.
+     * <p>
+     * Defaults to {@link StorageType FLAT_FILE}.
      *
      * @return The default enum value.
      * @since 1.6.0

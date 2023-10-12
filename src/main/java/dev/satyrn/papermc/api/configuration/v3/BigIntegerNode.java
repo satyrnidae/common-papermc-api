@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a configurable BigInteger value.
  *
  * @author Isabel Maskrey
- * @since 1.3-SNAPSHOT
+ * @since 1.3.0
  *
  * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.BigIntegerNode} instead.
  */
@@ -19,7 +19,8 @@ public class BigIntegerNode extends dev.satyrn.papermc.api.configuration.v1.BigI
      *
      * @param parent The parent node.
      * @param name   The node name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.3.0
      */
     public BigIntegerNode(@NotNull ConfigurationContainer parent, @NotNull String name) {
         super(parent, name);

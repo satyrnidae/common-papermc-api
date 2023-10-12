@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a configuration node with an integer value.
  *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public class IntegerNode extends ConfigurationNode<Integer> {
@@ -21,7 +21,8 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      *
      * @param parent The parent container.
      * @param name   The node's name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
@@ -36,6 +37,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @param name     The node's name.
      * @param minValue The minimum value allowed by the node.
      * @param maxValue The maximum value allowed by the node.
+     *
      * @since 1.6.2
      */
     public IntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, int minValue, int maxValue) {
@@ -48,7 +50,8 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * Returns the integer value of the node.
      *
      * @return The integer value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     @Override
     public final @NotNull Integer value() {
@@ -58,9 +61,12 @@ public class IntegerNode extends ConfigurationNode<Integer> {
 
     /**
      * Gets the default value of the node.
+     * <p>
+     * Defaults to {@code 0}.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
     public @NotNull Integer defaultValue() {
@@ -71,6 +77,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * Sets the value of the node.
      *
      * @param value The value to set.
+     *
      * @since 1.9.0
      */
     @Override

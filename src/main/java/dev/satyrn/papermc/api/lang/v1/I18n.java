@@ -18,12 +18,14 @@ import java.util.regex.Pattern;
  * Provides internationalization support for a plugin.
  *
  * @author Isabel Maskrey
- * @since 1.1-SNAPSHOT
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public class I18n {
     /**
      * The default locale to use for translation.
+     *
+     * @since 1.1.0
      */
     public static final @NotNull Locale DEFAULT_LOCALE = Locale.US;
     // Double apostrophe pattern
@@ -50,7 +52,8 @@ public class I18n {
      *
      * @param plugin        The plugin instance.
      * @param defaultBundle The default resource bundle.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     protected I18n(final @NotNull Plugin plugin, final @NotNull ResourceBundle defaultBundle) {
         this.plugin = plugin;
@@ -63,6 +66,8 @@ public class I18n {
      *
      * @param plugin   The plugin instance.
      * @param baseName The default resource bundle.
+     *
+     * @since 1.1.0
      */
     public I18n(final @NotNull Plugin plugin, final @NotNull String baseName) {
         this.plugin = plugin;
@@ -74,6 +79,8 @@ public class I18n {
      * Gets the current I18n instance.
      *
      * @return The current I18n instance.
+     *
+     * @since 1.1.0
      */
     public static @Nullable I18n getInstance() {
         return instance;
@@ -85,7 +92,8 @@ public class I18n {
      * @param key    The resource key.
      * @param format The formatting for the message.
      * @return The translated key.
-     * @since 0.0.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public static String tr(final @NotNull String key, final @NotNull Object... format) {
         if (instance == null) {
@@ -98,7 +106,8 @@ public class I18n {
      * Gets the current locale.
      *
      * @return The current locale.
-     * @since 1.2-SNAPSHOT
+     *
+     * @since 1.2.0
      */
     public @NotNull Locale getCurrentLocale() {
         return currentLocale;
@@ -108,6 +117,8 @@ public class I18n {
      * Gets the plugin instance.
      *
      * @return The plugin instance.
+     *
+     * @since 1.1.0
      */
     public @NotNull Plugin getPlugin() {
         return plugin;
@@ -119,7 +130,7 @@ public class I18n {
      * @param key    The key to translate.
      * @param format The message format parts
      * @return The translated key.
-     * @since 1.1-SNAPSHOT
+     * @since 1.1.0
      */
     protected final @NotNull String translate(final @NotNull String key, final @NotNull Object... format) {
         if (format.length == 0) {
@@ -133,7 +144,8 @@ public class I18n {
      * Sets the current locale of the internationalization handler.
      *
      * @param locale The locale string.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     public final void setLocale(final @Nullable String locale) {
         if (locale != null && !locale.isEmpty()) {
@@ -168,8 +180,10 @@ public class I18n {
      * Gets a resource bundle for the current locale.
      *
      * @param locale The current locale.
+     *
      * @return The new resource bundle.
-     * @since 0.0.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     protected @NotNull ResourceBundle getResourceBundleForLocale(final @NotNull Locale locale) {
         return ResourceBundle.getBundle(this.baseName, locale, new Utf8LangFileControl());
@@ -178,7 +192,7 @@ public class I18n {
     /**
      * Enables the internationalization handler.
      *
-     * @since 1.1-SNAPSHOT
+     * @since 1.1.0
      */
     public void enable() {
         instance = this;
@@ -187,7 +201,7 @@ public class I18n {
     /**
      * Disables the internationalization handler.
      *
-     * @since 1.1-SNAPSHOT
+     * @since 1.1.0
      */
     public void disable() {
         instance = null;
@@ -197,8 +211,10 @@ public class I18n {
      * Translates a given resource key using the current locale bundle.
      *
      * @param key The resource key
+     *
      * @return The translated value from the current or default locale, or the key itself if no such key exists.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     private @NotNull String translate(@NotNull final String key) {
         if (this.fileBundle != null) {
@@ -232,8 +248,10 @@ public class I18n {
      *
      * @param key    The key of the resource to format.
      * @param format The format parts.
+     *
      * @return The translated and formatted key from the resource file, or the key itself if no such key exists.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     private @NotNull String format(final @NotNull String key, final @NotNull Object... format) {
         @NotNull String translatedKey = this.translate(key);
@@ -262,8 +280,7 @@ public class I18n {
     /**
      * Gathers a UTF-8 *.lang file into a resource bundle.
      *
-     * @author Isabel Maskrey
-     * @since 1.1-SNAPSHOT
+     * @since 1.1.0
      */
     public static class Utf8LangFileControl extends ResourceBundle.Control {
         /**
@@ -274,9 +291,11 @@ public class I18n {
          * @param format      The file format. Unused.
          * @param classLoader The java class loader instance.
          * @param reload      Whether the stream should be reloaded or the cached class loader stream should be used.
+         *
          * @return A new ResourceBundle from the language file.
+         *
          * @throws IOException Occurs when the bundle file cannot be located or read.
-         * @since 1.1-SNAPSHOT
+         * @since 1.1.0
          */
         public @Nullable ResourceBundle newBundle(final @NotNull String baseName, final @NotNull Locale locale, final @Nullable String format, final @NotNull ClassLoader classLoader, final boolean reload) throws IOException {
             final @NotNull String resourceName = this.toResourceName(this.toBundleName(baseName, locale), "lang");
@@ -312,9 +331,11 @@ public class I18n {
          *
          * @param baseName The fallback resource name if the locale does not have a language code.
          * @param locale   The locale.
+         *
          * @return The locale's language and country code separated by an underscore, or, if the locale lacks a language
          * code, returns the base name.
-         * @since 1.1-SNAPSHOT
+         *
+         * @since 1.1.0
          */
         public @NotNull String toBundleName(final @NotNull String baseName, final @NotNull Locale locale) {
             // Root locale returns base name.
@@ -344,7 +365,6 @@ public class I18n {
     /**
      * Custom class loader which loads locale bundles from the plugin data folder.
      *
-     * @author Isabel Maskrey
      * @since 1.8.0
      */
     public static final class FileResourceClassLoader extends ClassLoader {
@@ -356,6 +376,8 @@ public class I18n {
          *
          * @param classLoader The class loader.
          * @param plugin      The plugin.
+         *
+         * @since 1.8.0
          */
         public FileResourceClassLoader(final @NotNull ClassLoader classLoader, final @NotNull Plugin plugin) {
             super(classLoader);
@@ -379,11 +401,13 @@ public class I18n {
          * same module as the resource). </p>
          *
          * @param name The resource name
+         *
          * @return {@code URL} object for reading the resource; {@code null} if
          * the resource could not be found, a {@code URL} could not be
          * constructed to locate the resource, the resource is in a package
          * that is not opened unconditionally, or access to the resource is
          * denied by the security manager.
+         *
          * @throws NullPointerException If {@code name} is {@code null}
          * When overriding this method it is recommended that an implementation
          * ensures that any delegation is consistent with the {@link
@@ -421,10 +445,12 @@ public class I18n {
          * opened} unconditionally. </p>
          *
          * @param name The resource name
+         *
          * @return An input stream for reading the resource; {@code null} if the
          * resource could not be found, the resource is in a package that
          * is not opened unconditionally, or access to the resource is
          * denied by the security manager.
+         *
          * @throws NullPointerException If {@code name} is {@code null}
          * @since 1.8.0
          */

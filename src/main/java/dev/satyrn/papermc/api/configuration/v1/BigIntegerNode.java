@@ -18,7 +18,8 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      *
      * @param parent The parent node.
      * @param name   The node name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.3.0
      */
     public BigIntegerNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
@@ -28,7 +29,8 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
      * Gets the value of the node.
      *
      * @return The value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.3.0
      */
     @Override
     public final @NotNull BigInteger value() {
@@ -45,9 +47,12 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
 
     /**
      * Gets the default value of the node.
+     * <p>
+     * Defaults to {@link BigInteger ZERO}.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
     public @NotNull BigInteger defaultValue() {
