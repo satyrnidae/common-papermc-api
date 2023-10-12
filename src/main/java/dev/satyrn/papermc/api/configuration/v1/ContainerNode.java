@@ -24,7 +24,8 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
     }
 
     /**
-     * Initializes the node as a root node.
+     * Initializes the node without a parent.
+     *
      * @param plugin The plugin instance.
      *
      * @since 1.9.0
@@ -35,7 +36,8 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
 
     /**
      * Gets the current value of the node.
-     * Always returns null for configuration containers.
+     * <p>
+     * Always returns null for container nodes.
      *
      * @return {@code null}
      *
@@ -48,9 +50,10 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
 
     /**
      * Gets the default value of the node.
-     * Always returns null for configuration containers.
+     * <p>
+     * Always returns null for container nodes.
      *
-     * @return The value.
+     * @return The default value.
      *
      * @since 1.9.0
      */
@@ -61,10 +64,13 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
 
     /**
      * Sets the value of the node.
+     * <p>
+     * Always does nothing for container nodes.
+     *
      * @param value The value to set.
      *
      * @since 1.9.0
      */
     @Override
-    public void setValue(Void value) { }
+    public void setValue(@Nullable Void value) { }
 }

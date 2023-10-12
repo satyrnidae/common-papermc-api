@@ -9,9 +9,8 @@ import org.jetbrains.annotations.Nullable;
  * Represents a base type for a class which contains several other configuration containers and/or nodes.
  *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
- *
- * @deprecated since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead.
+ * @since 1.0.0
+ * @deprecated since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead. Will be removed in a future version.
  */
 @Deprecated(since = "1.9.0")
 @SuppressWarnings("unused")
@@ -20,7 +19,8 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * Initializes the configuration container as a child of another container.
      *
      * @param parent The node parent.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     protected ConfigurationContainer(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
         super(parent, name);
@@ -30,17 +30,22 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * Initializes the configuration container as a root container.
      *
      * @param config The configuration instance.
-     * @since 1.0-SNAPSHOT
-     * @deprecated Use constructors which specify parent plugin instead.
+     *
+     * @since 1.0.0
+     * @deprecated since 1.6.0. Use constructors which specify parent plugin instead. Will be removed in a future version.
      */
-    @Deprecated
+    @Deprecated(since = "1.6.0", forRemoval = true)
+    @SuppressWarnings({"ConstantConditions", "removal"})
     protected ConfigurationContainer(final @NotNull Configuration config) {
         super(null, null, null, config);
     }
 
     /**
      * Initializes the configuration container as a root container.
+     *
      * @param plugin The plugin instance.
+     *
+     * @since 1.0.0
      */
     protected ConfigurationContainer(final @NotNull Plugin plugin) {
         super(plugin, null, null);
@@ -51,20 +56,23 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      *
      * @param plugin The plugin instance.
      * @param config The configuration instance.
-     * @since 1.6.0
      *
-     * @deprecated since 1.9.0.
+     * @since 1.6.0
+     * @deprecated since 1.9.0. To be removed in a future version.
      */
-    @Deprecated(since = "1.9.0")
+    @Deprecated(since = "1.9.0", forRemoval = true)
+    @SuppressWarnings("removal")
     protected ConfigurationContainer(final @NotNull Plugin plugin, final @NotNull Configuration config) {
         super(plugin, null, null, config);
     }
 
     /**
      * Gets the current value of the node.
+     * <p>
      * Always returns null for configuration containers.
      *
      * @return {@code null}
+     *
      * @since 1.0-SNAPSHOT
      */
     @Override
@@ -74,10 +82,12 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
 
     /**
      * Gets the default value of the node.
+     * <p>
      * Always returns null for configuration containers.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
     public final @Nullable Void defaultValue() {
@@ -86,10 +96,13 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
 
     /**
      * Sets the value of the node.
+     * <p>
+     * Does nothing for configuration containers.
+     *
      * @param value The value to set.
      *
      * @since 1.9.0
      */
     @Override
-    public void setValue(Void value) { }
+    public void setValue(@Nullable Void value) { }
 }
