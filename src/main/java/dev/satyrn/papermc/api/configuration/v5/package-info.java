@@ -1,9 +1,7 @@
 /**
  * Provides implementations for configuration wrappers.
  * <p>
- * Implements second-order breaking changes for the following classes:
- * <ul>
- * </ul>
+ * Implements second-order breaking changes.
  *
  * @since 1.6.0
  */

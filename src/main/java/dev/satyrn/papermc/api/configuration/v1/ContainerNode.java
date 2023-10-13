@@ -16,6 +16,7 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
      * Initializes the node as a child of another node.
      *
      * @param parent The node parent.
+     * @param name The name of the container.
      *
      * @since 1.9.0
      */

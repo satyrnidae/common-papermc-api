@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Isabel Maskrey
  * @since 1.6.0
+ * @deprecated Since 1.9.0. Use {@link dev.satyrn.papermc.api.configuration.v2.MySQLConfiguration} instead.
  */
 @Deprecated(since = "1.9.0")
 public class MySQLConfiguration extends ConfigurationContainer {

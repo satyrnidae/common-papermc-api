@@ -38,7 +38,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.0.0
      *
-     * @deprecated since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
+     * @deprecated Since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
      */
     @Deprecated(since = "1.9.0", forRemoval = true)
     protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
@@ -55,7 +55,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.6.0
      *
-     * @deprecated since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
+     * @deprecated Since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
      */
     @Deprecated(since = "1.9.0", forRemoval = true)
     protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
@@ -133,7 +133,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.0.0
      *
-     * @deprecated since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
+     * @deprecated Since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
      */
     @Deprecated(since = "1.9.0")
     public @NotNull String getPath() {
@@ -148,7 +148,7 @@ public abstract class ConfigurationNode<T> {
      * @return The full node path.
      *
      * @since 1.0.0
-     * @deprecated since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
+     * @deprecated Since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
      */
     @Deprecated(since = "1.9.0")
     public final @NotNull String getPath(@NotNull final StringBuilder stringBuilder) {

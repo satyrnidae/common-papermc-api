@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Isabel Maskrey
  * @since 1.0.0
- * @deprecated since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead. Will be removed in a future version.
+ * @deprecated Since 1.9.0. Use {@link ContainerNode} and {@link RootNode} instead. Will be removed in a future version.
  */
 @Deprecated(since = "1.9.0")
 @SuppressWarnings("unused")
@@ -19,6 +19,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * Initializes the configuration container as a child of another container.
      *
      * @param parent The node parent.
+     * @param name The name of the container.
      *
      * @since 1.0.0
      */
@@ -32,7 +33,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @param config The configuration instance.
      *
      * @since 1.0.0
-     * @deprecated since 1.6.0. Use constructors which specify parent plugin instead. Will be removed in a future version.
+     * @deprecated Since 1.6.0. Use constructors which specify parent plugin instead. Will be removed in a future version.
      */
     @Deprecated(since = "1.6.0", forRemoval = true)
     @SuppressWarnings({"ConstantConditions", "removal"})

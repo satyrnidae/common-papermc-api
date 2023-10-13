@@ -97,6 +97,8 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      *
      * @param usage The new usage hint.
      *
+     * @return Self.
+     *
      * @since 1.1.0
      */
     @SuppressWarnings("UnusedReturnValue")

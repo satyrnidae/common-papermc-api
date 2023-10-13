@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Isabel Maskrey
  * @since 1.3.0
- * @deprecated since 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.TypedMapListNode} instead.
+ * @deprecated Since 1.9.0 versioning refactor. Use {@link dev.satyrn.papermc.api.configuration.v1.TypedMapListNode} instead.
  */
 @Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")

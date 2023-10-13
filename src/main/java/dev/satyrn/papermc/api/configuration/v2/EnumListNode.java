@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Isabel Maskrey
  * @since 1.0.0
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.EnumListNode}
+ * @deprecated Since 1.9.0 versioning refactor. To be removed in a future version; use {@link dev.satyrn.papermc.api.configuration.v1.EnumListNode}
  */
 @Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
