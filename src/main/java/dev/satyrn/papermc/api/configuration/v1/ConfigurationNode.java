@@ -1,13 +1,13 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +27,7 @@ public abstract class ConfigurationNode<T> {
     // The plugin. Cannot be null.
     private final @NotNull Plugin plugin;
     // All child objects added to this node.
-    private final @NotNull List<ConfigurationNode<?>> children = new ArrayList<>();
+    private final @NotNull Collection<ConfigurationNode<?>> children = new HashSet<>();
 
     /**
      * Initializes a new Configuration node.
@@ -158,11 +158,11 @@ public abstract class ConfigurationNode<T> {
     /**
      * Gets the path of the node that contains the value.
      * <p>
-     * Only matches the value of {@code getBasePath(StringBuilder)} if this node does not contain any children.
+     * Only matches the value of {@code getBasePath(...)} if this node does not contain any children.
      *
      * @return The full path of the node which contains the value.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     public final @NotNull String getValuePath() {
         return this.getValuePath(new StringBuilder());
@@ -171,7 +171,7 @@ public abstract class ConfigurationNode<T> {
     /**
      * Gets the path of the node that contains the value.
      * <p>
-     * Only matches the value of {@code getBasePath(StringBuilder)} if this node does not contain any children.
+     * Only matches the value of {@code getBasePath(...)} if this node does not contain any children.
      *
      * @param stringBuilder The string builder with which to build out the full path name.
      *
@@ -183,13 +183,26 @@ public abstract class ConfigurationNode<T> {
         this.getBasePath(stringBuilder);
         // If the node contains children, but still stores a value, it must contain a value node
         // If the name of the node is empty then it is a root node.
-        if (this.hasChildren()) {
-            if (!stringBuilder.isEmpty() && !this.getValueNodeName().isEmpty()) {
+        if (this.isSubNode() && this.hasChildren()) {
+            if (!this.getValueNodeName().isEmpty()) {
                 stringBuilder.append(".");
             }
             stringBuilder.append(this.getValueNodeName());
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * Gets the path of the base node.
+     * <p>
+     * Only matches the value of {@code getValuePath(...)} if this node does not contain any children.
+     *
+     * @return The full path of this node.
+     *
+     * @since 1.9.0
+     */
+    public final @NotNull String getBasePath() {
+        return this.getBasePath(new StringBuilder());
     }
 
     /**
@@ -207,7 +220,7 @@ public abstract class ConfigurationNode<T> {
     public final String getBasePath(@NotNull final StringBuilder stringBuilder) {
         if (this.isSubNode()) {
             parent.getBasePath(stringBuilder);
-            if (!stringBuilder.isEmpty()) {
+            if (parent.isSubNode()) {
                 stringBuilder.append('.');
             }
         }
@@ -246,6 +259,7 @@ public abstract class ConfigurationNode<T> {
     public final @NotNull String toString() {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append(super.toString()).append('.');
         this.toString(stringBuilder);
 
         return stringBuilder.toString();
@@ -289,35 +303,56 @@ public abstract class ConfigurationNode<T> {
     public abstract @Nullable T defaultValue();
 
     /**
-     * Sets the value of the node.
+     * Sets the value of the node in the configuration file.
      *
      * @param value The value to set.
      *
      * @since 1.9.0
+     * @deprecated Since 1.10.0. Use {@code setConfigValue(T)} instead. Will be removed in the future.
      */
+    @Deprecated(since = "1.10.0", forRemoval = true)
     public void setValue(@Nullable T value) {
-        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : value);
+        this.setConfigValue(value);
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
+     */
+    public void setConfigValue(@Nullable T value) {
+        // By default, we just write the value as provided.
+        if (!this.getValuePath().isBlank()) {
+            this.getConfig().set(this.getValuePath(), value);
+        }
     }
 
     /**
      * Ensures that the node's list of children includes the specified child node.
+     * <p>
+     * Duplicated values are discarded.
      *
      * @param configurationNode the child to add to the node.
      *
-     * @throws UnsupportedOperationException if the {@code add} operation
-     *         is not supported by this collection
-     * @throws ClassCastException if the class of the specified element
-     *         prevents it from being added to this collection
-     * @throws NullPointerException if the specified element is null and this
-     *         collection does not permit null elements
-     * @throws IllegalArgumentException if some property of the element
-     *         prevents it from being added to this collection
-     * @throws IllegalStateException if the element cannot be added at this
-     *         time due to insertion restriction.
      * @since 1.9.0
      */
     protected final void addChild(@NotNull ConfigurationNode<?> configurationNode) {
-        this.children.add(configurationNode);
+        boolean addChild = false;
+        var optional = this.children.stream().filter(x -> x.equals(configurationNode)).findFirst();
+        if (optional.isPresent() && optional.get() != configurationNode) {
+            int priority = optional.get().getPriority().getValue();
+            if (priority == -2 || priority < configurationNode.getPriority().getValue()) {
+                addChild = true;
+                this.children.remove(optional.get());
+            }
+        } else {
+            addChild = true;
+        }
+        if (addChild) {
+            this.children.add(configurationNode);
+        }
     }
 
     /**
@@ -359,9 +394,10 @@ public abstract class ConfigurationNode<T> {
      * @since 1.9.0
      */
     public void save() {
-        Object value = this.value();
-        if (value != null && this.isSubNode()) {
-            this.getConfig().set(this.getValuePath(), value);
+        T value = this.value();
+        if (this.isSubNode() || this.hasChildren()) {
+            // Yeah, this is confusing but bear with me
+            this.setValue(value);
         }
         if (this.hasChildren()) {
             for (ConfigurationNode<?> child : this.children) {
@@ -559,7 +595,44 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.1
      */
-    public @NotNull @Unmodifiable List<ConfigurationNode<?>> getChildren() {
-        return List.copyOf(this.children);
+    public @NotNull @Unmodifiable List<@NotNull ConfigurationNode<?>> getChildren() {
+        return this.children.stream().filter(Objects::nonNull).toList();
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * <p>
+     * Two {@code ConfigurationNode} objects are equivalent based purely on whether their plugin instance and base
+     * path are the same.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public boolean equals(Object obj) {
+        boolean isEqual = super.equals(obj);
+        if (!isEqual) {
+            final @NotNull Optional<ConfigurationNode<?>> optionalOtherNode = Cast.as(obj);
+            if (optionalOtherNode.isPresent()) {
+                final @NotNull ConfigurationNode<?> otherNode = optionalOtherNode.get();
+                final @NotNull Plugin otherPlugin = otherNode.getPlugin();
+
+                if (otherPlugin == this.getPlugin()) {
+                    final @NotNull String otherBasePath = otherNode.getBasePath();
+                    isEqual = otherBasePath.equals(this.getBasePath());
+                }
+            }
+        }
+        return isEqual;
+    }
+
+    /**
+     * Gets the priority of this node.
+     * <p>
+     * See {@link NodePriority} for an explanation of priority functionality.
+     *
+     * @return The node's priority.
+     */
+    public @NotNull NodePriority getPriority() {
+        return NodePriority.NORMAL;
     }
 }

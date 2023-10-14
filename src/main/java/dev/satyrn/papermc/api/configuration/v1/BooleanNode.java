@@ -1,6 +1,7 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a configuration node with a boolean value.
@@ -60,5 +61,17 @@ public class BooleanNode extends ConfigurationNode<Boolean> {
     @Override
     public @NotNull String getValueNodeName() {
         return "enabled";
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.9.0
+     */
+    @Override
+    public void setValue(@Nullable Boolean value) {
+
     }
 }

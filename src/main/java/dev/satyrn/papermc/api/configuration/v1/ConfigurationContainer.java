@@ -102,8 +102,22 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      *
      * @param value The value to set.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     @Override
-    public void setValue(@Nullable Void value) { }
+    public void setConfigValue(@Nullable Void value) { }
+
+    /**
+     * Builds the string representation of the node.
+     * <p>
+     * By default, {@code ContainerNode}s return just the name of the node.
+     *
+     * @param stringBuilder The {@link StringBuilder} with which to build the string.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public void toString(@NotNull StringBuilder stringBuilder) {
+        stringBuilder.append(this.getName());
+    }
 }

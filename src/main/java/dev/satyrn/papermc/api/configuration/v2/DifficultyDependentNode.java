@@ -1,5 +1,7 @@
-package dev.satyrn.papermc.api.configuration.v1;
+package dev.satyrn.papermc.api.configuration.v2;
 
+import dev.satyrn.papermc.api.configuration.v1.ConfigurationNode;
+import dev.satyrn.papermc.api.configuration.v1.ContainerNode;
 import org.bukkit.Difficulty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,13 +14,11 @@ import java.util.List;
  *
  * @param <T> The value type, shared between each sub-node.
  *
- * @since 1.9.0
+ * @since 1.9.1
  * @author Isabel Maskrey
- * @deprecated Since 1.9.1. Use {@link dev.satyrn.papermc.api.configuration.v2.DifficultyDependentNode} instead. Default value is removed.
  */
-@Deprecated(since = "1.9.1")
 @SuppressWarnings("unused")
-public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
+public abstract class DifficultyDependentNode<T> extends ContainerNode {
 
     /**
      * Initializes a new difficulty-dependent configuration node.
@@ -26,7 +26,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      * @param parent The parent node.
      * @param name   The node name.
      *
-     * @since 1.9.0
+     * @since 1.9.1
      */
     protected DifficultyDependentNode(@NotNull ConfigurationNode<?> parent,
                                       @NotNull String name) {
@@ -38,7 +38,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The peaceful node.
      *
-     * @since 1.9.0
+     * @since 1.9.1
      */
     protected @Nullable ConfigurationNode<T> getPeacefulNode() {
         return null;
@@ -49,7 +49,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The easy node.
      *
-     * @since 1.9.0
+     * @since 1.9.1
      */
     protected @Nullable ConfigurationNode<T> getEasyNode() {
         return null;
@@ -60,7 +60,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The normal node.
      *
-     * @since 1.9.0
+     * @since 1.9.1
      */
     protected @Nullable ConfigurationNode<T> getNormalNode() {
         return null;
@@ -71,7 +71,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The hard node.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     protected @Nullable ConfigurationNode<T> getHardNode() {
         return null;
@@ -84,35 +84,11 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The name of the value node.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     @Override
     public final @NotNull String getValueNodeName() {
         return "default";
-    }
-
-    /**
-     * Gets the value of the node.
-     *
-     * @return The value.
-     *
-     * @since 1.9.0
-     */
-    @Override
-    public @Nullable T value() {
-        return null;
-    }
-
-    /**
-     * Gets the default value of the node.
-     *
-     * @return The value.
-     *
-     * @since 1.9.0
-     */
-    @Override
-    public @Nullable T defaultValue() {
-        return null;
     }
 
     /**
@@ -122,32 +98,37 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return The value of the node for that difficulty.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     public @Nullable T value(@NotNull Difficulty difficulty) {
+        T value = null;
         switch (difficulty) {
             case PEACEFUL:
                 final @Nullable ConfigurationNode<T> peacefulNode = this.getPeacefulNode();
                 if (peacefulNode != null) {
-                    return peacefulNode.value();
+                    value = peacefulNode.value();
+                    break;
                 }
             case EASY:
                 final @Nullable ConfigurationNode<T> easyNode = this.getEasyNode();
                 if (easyNode != null) {
-                    return easyNode.value();
+                    value = easyNode.value();
+                    break;
                 }
             case NORMAL:
                 final @Nullable ConfigurationNode<T> normalNode = this.getNormalNode();
                 if (normalNode != null) {
-                    return normalNode.value();
+                    value = normalNode.value();
+                    break;
                 }
             case HARD:
                 final @Nullable ConfigurationNode<T> hardNode = this.getHardNode();
                 if (hardNode != null) {
-                    return hardNode.value();
+                    value = hardNode.value();
+                    break;
                 }
         }
-        return this.value();
+        return value;
     }
 
     /**
@@ -156,7 +137,7 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      * @param difficulty The difficulty level.
      * @param value The value of the node at the difficulty level.
      *
-     * @since 1.9.0
+     * @since 1.10.0
      */
     public final void setValue(@NotNull Difficulty difficulty, @Nullable T value) {
         switch (difficulty) {
@@ -164,34 +145,33 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
                 final @Nullable ConfigurationNode<T> peacefulNode = this.getPeacefulNode();
                 if (peacefulNode != null) {
                     peacefulNode.setValue(value);
-                    return;
+                    break;
                 }
             case EASY:
                 final @Nullable ConfigurationNode<T> easyNode = this.getEasyNode();
                 if (easyNode != null) {
                     easyNode.setValue(value);
-                    return;
+                    break;
                 }
             case NORMAL:
                 final @Nullable ConfigurationNode<T> normalNode = this.getNormalNode();
                 if (normalNode != null) {
                     normalNode.setValue(value);
-                    return;
+                    break;
                 }
             case HARD:
                 final @Nullable ConfigurationNode<T> hardNode = this.getHardNode();
                 if (hardNode != null) {
                     hardNode.setValue(value);
-                    return;
+                    break;
                 }
         }
-        this.setValue(value);
     }
 
     /**
      * Writes the value of the node and its children to the config file.
      *
-     * @since 1.9.1
+     * @since 1.10.0
      */
     @Override
     public void save() {
@@ -220,9 +200,9 @@ public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
      *
      * @return An unmodifiable list of the item's children.
      *
-     * @since 1.9.1
+     * @since 1.10.0
      */
-    public @NotNull @Unmodifiable List<ConfigurationNode<?>> getChildren() {
+    public @NotNull @Unmodifiable List<@NotNull ConfigurationNode<?>> getChildren() {
         return super.getChildren()
                 .stream()
                 .filter(x -> x != this.getPeacefulNode()
