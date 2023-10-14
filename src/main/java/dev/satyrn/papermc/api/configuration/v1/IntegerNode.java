@@ -81,7 +81,7 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.9.0
      */
     @Override
-    public void setValue(Integer value) {
+    public void setConfigValue(Integer value) {
         this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
     }
 }

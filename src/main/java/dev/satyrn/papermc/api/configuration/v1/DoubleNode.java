@@ -81,7 +81,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @since 1.9.0
      */
     @Override
-    public void setValue(Double value) {
+    public void setConfigValue(Double value) {
         this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
     }
 }
