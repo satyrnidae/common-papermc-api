@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a configuration node with a double-precision floating point value.
  *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public class DoubleNode extends ConfigurationNode<Double> {
@@ -21,7 +21,8 @@ public class DoubleNode extends ConfigurationNode<Double> {
      *
      * @param parent The parent container.
      * @param name   The node name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
@@ -36,6 +37,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @param name     The node name.
      * @param minValue The minimum value of the node.
      * @param maxValue The maximum value of the node.
+     *
      * @since 1.6.2
      */
     public DoubleNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name, final double minValue, final double maxValue) {
@@ -48,7 +50,8 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * Returns the double-precision floating point value of the node.
      *
      * @return The double-precision floating point value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     @Override
     public final @NotNull Double value() {
@@ -58,9 +61,12 @@ public class DoubleNode extends ConfigurationNode<Double> {
 
     /**
      * Gets the default value of the node.
+     * <p>
+     * Defaults to {@code 0D}.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
     public @NotNull Double defaultValue() {
@@ -71,6 +77,7 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * Sets the value of the node.
      *
      * @param value The value to set.
+     *
      * @since 1.9.0
      */
     @Override

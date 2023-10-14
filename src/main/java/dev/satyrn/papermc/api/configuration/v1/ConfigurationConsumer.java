@@ -7,18 +7,20 @@ import org.jetbrains.annotations.NotNull;
  * the configuration is reloaded from disk.
  *
  * @param <T> The configuration class
+ *
  * @author Isabel Maskrey
- * @since 1.9.0
+ * @since 1.4.0
  * @deprecated Since 1.6.1. Use configuration node values directly.
  */
 @Deprecated(since = "1.6.1")
 @SuppressWarnings("unused")
-public interface ConfigurationConsumer<T extends ConfigurationContainer> {
+public interface ConfigurationConsumer<T extends ConfigurationNode<?>> {
     /**
      * Reloads the configuration file.
      *
      * @param configuration The configuration file.
-     * @since 1.4-SNAPSHOT
+     *
+     * @since 1.4.0
      */
     void reloadConfiguration(final @NotNull T configuration);
 }

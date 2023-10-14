@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Isabel Maskrey
  * @since 1.6.0
  *
- * @deprecated since 1.9.0 versioning refactor. To be removed in a future version. Use {@link dev.satyrn.papermc.api.util.v1.Cast} instead.
+ * @deprecated Since 1.9.0 versioning refactor. To be removed in a future version. Use {@link dev.satyrn.papermc.api.util.v1.Cast} instead.
  */
 @Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")

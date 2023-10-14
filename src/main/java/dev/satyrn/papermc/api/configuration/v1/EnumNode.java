@@ -6,29 +6,31 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 
 /**
- * Represents a configuration node with a Log Level value.
+ * Represents a configuration node with an enum value.
  *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
     /**
-     * Creates a new configuration node with a Log Level value.
+     * Creates a new configuration node with an enum value.
      *
      * @param parent The parent container.
      * @param name   The node's name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public EnumNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
     }
 
     /**
-     * Returns the Log Level value of the node.
+     * Returns the enum value of the node.
      *
-     * @return The Log Level value.
-     * @since 1.0-SNAPSHOT
+     * @return The enum value.
+     *
+     * @since 1.0.0
      */
     @Override
     public final @NotNull E value() {
@@ -49,9 +51,11 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * Parses the enum value.
      *
      * @param value The string value from the config file
+     *
      * @return The parsed enum value.
+     *
      * @throws IllegalArgumentException Thrown when the enum value parses.
-     * @since 1.0-SNAPSHOT
+     * @since 1.0.0
      */
     protected abstract @NotNull E parse(final @NotNull String value) throws IllegalArgumentException;
 
@@ -59,15 +63,17 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
      * Gets the default enum value.
      *
      * @return The default enum value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     protected abstract @NotNull E getDefault();
 
     /**
      * Gets the default value of the node.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
     public final @NotNull E defaultValue() {

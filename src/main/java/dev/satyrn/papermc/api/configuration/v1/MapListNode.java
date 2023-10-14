@@ -1,8 +1,8 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +10,7 @@ import java.util.Map;
  * Represents a configuration node with a map list value.
  *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
- *
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
@@ -20,7 +19,8 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      *
      * @param parent The parent container.
      * @param name   The node's name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public MapListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
@@ -30,21 +30,25 @@ public class MapListNode extends ConfigurationNode<List<Map<?, ?>>> {
      * Returns the entire configuration node as a map list.
      *
      * @return The entire configuration node as a map list.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     @Override
-    public @NotNull List<Map<?, ?>> value() {
+    public @NotNull @Unmodifiable List<Map<?, ?>> value() {
         return this.getConfig().getMapList(this.getValuePath());
     }
 
     /**
      * Gets the default value of the node.
+     * <p>
+     * Defaults to an empty, unmodifiable list.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     @Override
-    public final @NotNull List<Map<?, ?>> defaultValue() {
-        return new ArrayList<>();
+    public final @NotNull @Unmodifiable List<Map<?, ?>> defaultValue() {
+        return List.of();
     }
 }

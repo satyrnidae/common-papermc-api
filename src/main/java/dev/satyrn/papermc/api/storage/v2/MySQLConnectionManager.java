@@ -17,13 +17,21 @@ import java.util.logging.Level;
  * Handles connections to a MySQL-like data source.
  *
  * @author Isabel Maskrey
- * @since 1.6.0
+ * @since 1.9.0
  */
 @SuppressWarnings({"unused", "ClassCanBeRecord"})
 public class MySQLConnectionManager implements ConnectionManager {
     private final transient @NotNull Plugin plugin;
     private final transient @NotNull MySQLConfiguration configuration;
 
+    /**
+     * Creates a new MySQL connection manager
+     *
+     * @param plugin The plugin instance.
+     * @param configuration The connection configuration.
+     *
+     * @since 1.9.0
+     */
     public MySQLConnectionManager(final @NotNull Plugin plugin, final @NotNull MySQLConfiguration configuration) {
         this.plugin = plugin;
         this.configuration = configuration;
@@ -33,7 +41,8 @@ public class MySQLConnectionManager implements ConnectionManager {
      * Opens a connection to the data source.
      *
      * @return The connection to the data source.
-     * @since 1.6.0
+     *
+     * @since 1.9.0
      */
     @Override
     public @Nullable Connection connect() {

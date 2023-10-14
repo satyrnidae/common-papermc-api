@@ -4,19 +4,19 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
  * Represents a single configuration node. Cannot contain sub-nodes or containers.
  *
  * @param <T> The value type.
+ *
  * @author Isabel Maskrey
- * @since 1.0-SNAPSHOT
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public abstract class ConfigurationNode<T> {
@@ -27,7 +27,7 @@ public abstract class ConfigurationNode<T> {
     // The plugin. Cannot be null.
     private final @NotNull Plugin plugin;
     // All child objects added to this node.
-    private final @NotNull Collection<ConfigurationNode<?>> children = new ArrayList<>();
+    private final @NotNull List<ConfigurationNode<?>> children = new ArrayList<>();
 
     /**
      * Initializes a new Configuration node.
@@ -35,11 +35,12 @@ public abstract class ConfigurationNode<T> {
      * @param parent The parent node.
      * @param name   The node name.
      * @param config The configuration instance.
-     * @since 1.0-SNAPSHOT
      *
-     * @deprecated since 1.9.0.
+     * @since 1.0.0
+     *
+     * @deprecated Since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
      */
-    @Deprecated(since = "1.9.0")
+    @Deprecated(since = "1.9.0", forRemoval = true)
     protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name, final @NotNull Configuration config) {
         this(parent.getPlugin(), parent, name, config);
     }
@@ -51,11 +52,12 @@ public abstract class ConfigurationNode<T> {
      * @param parent The parent node.
      * @param name   The node name.
      * @param config The configuration instance.
+     *
      * @since 1.6.0
      *
-     * @deprecated since 1.9.0
+     * @deprecated Since 1.9.0. Use a constructor which does not use a {@code configuration} parameter, as the value of the parameter is ignored.
      */
-    @Deprecated(since = "1.9.0")
+    @Deprecated(since = "1.9.0", forRemoval = true)
     protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name, @NotNull final Configuration config) {
         this(plugin, parent, name);
     }
@@ -65,7 +67,8 @@ public abstract class ConfigurationNode<T> {
      *
      * @param parent The parent node.
      * @param name   The node name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     protected ConfigurationNode(final @NotNull ConfigurationNode<?> parent, final @Nullable String name) {
         this(parent.getPlugin(), parent, name);
@@ -77,6 +80,7 @@ public abstract class ConfigurationNode<T> {
      * @param plugin The plugin instance.
      * @param parent The parent node.
      * @param name   The node name.
+     *
      * @since 1.6.0
      */
     protected ConfigurationNode(final @NotNull Plugin plugin, @Nullable final ConfigurationNode<?> parent, @Nullable final String name) {
@@ -92,22 +96,22 @@ public abstract class ConfigurationNode<T> {
     /**
      * Gets the plugin instance.
      *
-     * @return The plugin instance. May be null.
+     * @return The plugin instance.
+     *
      * @since 1.6.0
      */
-    @NotNull
-    public Plugin getPlugin() {
+    public @NotNull Plugin getPlugin() {
         return this.plugin;
     }
 
     /**
-     * Gets the configuration instance.
+     * Gets the configuration instance for the plugin.
      *
      * @return The configuration instance.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
-    @NotNull
-    public Configuration getConfig() {
+    public @NotNull Configuration getConfig() {
         return plugin.getConfig();
     }
 
@@ -115,10 +119,10 @@ public abstract class ConfigurationNode<T> {
      * Gets the name of the node.
      *
      * @return The name of the node.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
-    @Nullable
-    public String getName() {
+    public @Nullable String getName() {
         return this.name;
     }
 
@@ -126,60 +130,61 @@ public abstract class ConfigurationNode<T> {
      * Constructs the full node path.
      *
      * @return The full node path.
-     * @since 1.0-SNAPSHOT
      *
-     * @deprecated since 1.9.0. Use {@link ConfigurationNode getBasePath} or {@link ConfigurationNode getValuePath} instead.
+     * @since 1.0.0
+     *
+     * @deprecated Since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
      */
     @Deprecated(since = "1.9.0")
-    @NotNull
-    public String getPath() {
+    public @NotNull String getPath() {
         return this.getBasePath(new StringBuilder());
     }
 
     /**
      * Constructs the full node path.
      *
-     * @param stringBuilder The StringBuilder with which to build out the full node path.
-     * @return The full node path.
-     * @since 1.0-SNAPSHOT
+     * @param stringBuilder The {@link StringBuilder} with which to build out the full node path.
      *
-     * @deprecated since 1.9.0. Use {@link ConfigurationNode getBasePath} or {@link ConfigurationNode getValuePath} instead.
+     * @return The full node path.
+     *
+     * @since 1.0.0
+     * @deprecated Since 1.9.0. Use {@code getValuePath()} or {@code getBasePath(StringBuilder)} instead.
      */
     @Deprecated(since = "1.9.0")
-    @NotNull
-    public final String getPath(@NotNull final StringBuilder stringBuilder) {
+    public final @NotNull String getPath(@NotNull final StringBuilder stringBuilder) {
         return this.getBasePath(stringBuilder);
     }
 
     /**
      * Gets the path of the node that contains the value.
-     * May or may not match the value of {@link ConfigurationNode getNodePath}.
+     * <p>
+     * Only matches the value of {@code getBasePath(StringBuilder)} if this node does not contain any children.
      *
      * @return The full path of the node which contains the value.
      *
      * @since 1.9.0
      */
-    @NotNull
-    public final String getValuePath() {
+    public final @NotNull String getValuePath() {
         return this.getValuePath(new StringBuilder());
     }
 
     /**
      * Gets the path of the node that contains the value.
-     * May or may not match the value of {@link ConfigurationNode getNodePath}.
+     * <p>
+     * Only matches the value of {@code getBasePath(StringBuilder)} if this node does not contain any children.
      *
      * @param stringBuilder The string builder with which to build out the full path name.
+     *
      * @return The full path of the node which contains the value.
      *
      * @since 1.9.0
      */
-    @NotNull
-    public final String getValuePath(@NotNull final StringBuilder stringBuilder) {
+    public final @NotNull String getValuePath(@NotNull final StringBuilder stringBuilder) {
         this.getBasePath(stringBuilder);
         // If the node contains children, but still stores a value, it must contain a value node
         // If the name of the node is empty then it is a root node.
         if (this.hasChildren()) {
-            if (!stringBuilder.isEmpty()) {
+            if (!stringBuilder.isEmpty() && !this.getValueNodeName().isEmpty()) {
                 stringBuilder.append(".");
             }
             stringBuilder.append(this.getValueNodeName());
@@ -189,9 +194,11 @@ public abstract class ConfigurationNode<T> {
 
     /**
      * Gets the path of the base node.
-     * May or may not match the value of {@link ConfigurationNode getValuePath} if this node contains children.
+     * <p>
+     * Only matches the value of {@code getValuePath(...)} if this node does not contain any children.
      *
-     * @param stringBuilder The string builder with which to build out the full path name.
+     * @param stringBuilder The {@link StringBuilder} with which to build out the full path name.
+     *
      * @return The full path of this node.
      *
      * @since 1.9.0
@@ -213,42 +220,77 @@ public abstract class ConfigurationNode<T> {
 
     /**
      * Gets the name of the value node, which will be used if this node contains children and a value.
+     * <p>
      * Defaults to "value" for most node types.
      *
      * @return The name of the value node.
+     *
      * @since 1.9.0
      */
     public @NotNull String getValueNodeName() { return "value"; }
 
     /**
-     * Returns the value of the node as a string.
+     * Returns the string representation of this node.
+     * <p>
+     * By default, this matches the format {@code path=value}, where {@code path}
+     * is the path of the configuration value, and {@code value} is the string
+     * representation of the value of this node.
+     * <p>
+     * This can be overridden indirectly by altering {@code toString(StringBuilder)}.
      *
      * @return The value as a string.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     @Override
     public final @NotNull String toString() {
-        return this.value() == null ? "" : Objects.requireNonNull(this.value()).toString();
+        final @NotNull StringBuilder stringBuilder = new StringBuilder();
+
+        this.toString(stringBuilder);
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Builds the string value of the node.
+     * <p>
+     * Override this to alter the value returned by {@code toString()}.
+     * <p>
+     * By default, this matches the format {@code path=value}, where {@code path}
+     * is the path of the configuration value, and {@code value} is the string
+     * representation of the value of this node.
+     *
+     * @param stringBuilder The {@link StringBuilder} with which to build the string.
+     *
+     * @since 1.9.1
+     */
+    public void toString(final @NotNull StringBuilder stringBuilder) {
+        this.getValuePath(stringBuilder);
+        stringBuilder.append('=');
+        stringBuilder.append(this.value()); // If the value is null, outputs "null"
     }
 
     /**
      * Gets the value of the node.
      *
      * @return The value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public abstract @Nullable T value();
 
     /**
      * Gets the default value of the node.
      *
-     * @return The value.
-     * @since 1.3-SNAPSHOT
+     * @return The default value.
+     *
+     * @since 1.3.0
      */
     public abstract @Nullable T defaultValue();
 
     /**
      * Sets the value of the node.
+     *
      * @param value The value to set.
      *
      * @since 1.9.0
@@ -261,6 +303,7 @@ public abstract class ConfigurationNode<T> {
      * Ensures that the node's list of children includes the specified child node.
      *
      * @param configurationNode the child to add to the node.
+     *
      * @throws UnsupportedOperationException if the {@code add} operation
      *         is not supported by this collection
      * @throws ClassCastException if the class of the specified element
@@ -270,8 +313,7 @@ public abstract class ConfigurationNode<T> {
      * @throws IllegalArgumentException if some property of the element
      *         prevents it from being added to this collection
      * @throws IllegalStateException if the element cannot be added at this
-     *         time due to insertion restrictions
-     *
+     *         time due to insertion restriction.
      * @since 1.9.0
      */
     protected final void addChild(@NotNull ConfigurationNode<?> configurationNode) {
@@ -286,12 +328,15 @@ public abstract class ConfigurationNode<T> {
      * @since 1.9.0
      */
     public final boolean hasChildren() {
-        return !this.children.isEmpty();
+        return !this.getChildren().isEmpty();
     }
 
     /**
      * Whether the configuration node is a sub node or a root node.
+     *
      * @return {@code true} if the node has a parent node; otherwise, {@code false}
+     *
+     * @since 1.9.0
      */
     public final boolean isSubNode() {
         return this.parent != null;
@@ -299,7 +344,10 @@ public abstract class ConfigurationNode<T> {
 
     /**
      * Whether the configuration node is named.
+     *
      * @return {@code true} if the root node name is not null or blank; otherwise, {@code false}
+     *
+     * @since 1.9.0
      */
     public final boolean hasName() {
         return this.name != null && !this.name.isBlank();
@@ -334,7 +382,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.0
      */
-    public @NotNull List<String> getComments() {
+    public @NotNull @Unmodifiable List<String> getComments() {
         return this.getComments(false);
     }
 
@@ -348,12 +396,13 @@ public abstract class ConfigurationNode<T> {
      * @param basePath If {@code true}, the node's base path will be used instead
      *                 of its value path. This is useful if you have nested value
      *                 nodes.
+     *
      * @return An unmodifiable list of the node's comments. Every entry
      * represents one line.
      *
      * @since 1.9.0
      */
-    public @NotNull List<String> getComments(boolean basePath) {
+    public @NotNull @Unmodifiable List<String> getComments(boolean basePath) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
         return this.getConfig().getComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
     }
@@ -370,7 +419,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.0
      */
-    public @NotNull List<String> getInlineComments() {
+    public @NotNull @Unmodifiable List<String> getInlineComments() {
         return this.getInlineComments(false);
     }
 
@@ -384,12 +433,13 @@ public abstract class ConfigurationNode<T> {
      * @param basePath If {@code true}, the node's base path will be used instead
      *                 of the value path. This is useful if you have nested value
      *                 nodes.
+     *
      * @return An unmodifiable list of the node's inline comments. Every entry
      * represents one line.
      *
      * @since 1.9.0
      */
-    public @NotNull List<String> getInlineComments(boolean basePath) {
+    public @NotNull @Unmodifiable List<String> getInlineComments(boolean basePath) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
         return this.getConfig().getInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder));
     }
@@ -404,11 +454,12 @@ public abstract class ConfigurationNode<T> {
      * <p>
      * Some implementations may have limitations on what persists. See their
      * individual javadocs for details.
+     *
      * @param comments New comments to set at the value node. Every entry represents a new line.
      *
      * @since 1.9.0
      */
-    public void setComments(String... comments) {
+    public void setComments(@Nullable String... comments) {
         this.setComments(false, comments);
     }
 
@@ -429,7 +480,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.9.0
      */
-    public void setComments(boolean basePath, String... comments) {
+    public void setComments(boolean basePath, @Nullable String... comments) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
         this.getConfig().setComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
     }
@@ -444,11 +495,12 @@ public abstract class ConfigurationNode<T> {
      * <p>
      * Some implementations may have limitations on what persists. See their
      * individual javadocs for details.
+     *
      * @param comments New comments to set at the value node path. Every entry represents a new line.
      *
      * @since 1.9.0
      */
-    public void setInlineComments(String... comments) {
+    public void setInlineComments(@Nullable String... comments) {
         this.setInlineComments(false, comments);
     }
 
@@ -462,13 +514,14 @@ public abstract class ConfigurationNode<T> {
      * <p>
      * Some implementations may have limitations on what persists. See their
      * individual javadocs for details.
+     *
      * @param basePath if {@code true}, the base path will be used instead of the value path.
      *                 This can be useful if you have nested value nodes.
      * @param comments New comments to set for the node. Every entry represents a new line.
      *
      * @since 1.9.0
      */
-    public void setInlineComments(boolean basePath, String... comments) {
+    public void setInlineComments(boolean basePath, @Nullable String... comments) {
         final @NotNull StringBuilder stringBuilder = new StringBuilder();
         this.getConfig().setInlineComments(basePath ? this.getBasePath(stringBuilder) : this.getValuePath(stringBuilder), List.of(comments));
     }
@@ -487,13 +540,26 @@ public abstract class ConfigurationNode<T> {
     }
 
     /**
-     * Returns a new slf4j Logger instance associated with the plugin.
+     * Returns the plugin logger associated with this server's logger. The
+     * returned logger automatically tags all log messages with the plugin's
+     * name.
      *
-     * @return A new slf4j Logger associated with the plugin.
+     * @return SLF4J Logger associated with the plugin.
      *
      * @since 1.9.0
      */
     public @NotNull org.slf4j.Logger getSLF4JLogger() {
         return plugin.getSLF4JLogger();
+    }
+
+    /**
+     * Gets an unmodifiable list of children for this node.
+     *
+     * @return An unmodifiable list of the item's children.
+     *
+     * @since 1.9.1
+     */
+    public @NotNull @Unmodifiable List<ConfigurationNode<?>> getChildren() {
+        return List.copyOf(this.children);
     }
 }

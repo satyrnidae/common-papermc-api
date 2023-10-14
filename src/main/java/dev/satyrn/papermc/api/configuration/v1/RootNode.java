@@ -35,6 +35,8 @@ public abstract class RootNode extends ContainerNode {
      * Gets the config version.
      *
      * @return The version of the configuration file.
+     *
+     * @since 1.9.0
      */
     public int getVersion() {
         return this._version.value();
@@ -44,6 +46,8 @@ public abstract class RootNode extends ContainerNode {
      * Sets the config version.
      *
      * @param newVersion The new version of the config file.
+     *
+     * @since 1.9.0
      */
     public void setVersion(int newVersion) {
         final int previousVersion = this.getVersion();

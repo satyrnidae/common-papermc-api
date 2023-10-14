@@ -12,7 +12,7 @@ import java.util.Objects;
  * Represents a basic command handler.
  *
  * @author Isabel Maskrey
- * @since 1.1-SNAPSHOT
+ * @since 1.1.0
  */
 @SuppressWarnings("unused")
 public abstract class CommandHandler implements CommandExecutor, TabCompleter {
@@ -25,7 +25,8 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * Initializes a new instance of a command handler.
      *
      * @param plugin The parent plugin.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     protected CommandHandler(@NotNull Plugin plugin) {
         this.plugin = plugin;
@@ -35,8 +36,10 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * Sets up a plugin command.
      *
      * @param command The plugin command.
+     *
      * @return The command handler instance.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     @Contract(value = "_ -> this", mutates = "this")
     public final @NotNull CommandHandler setupCommand(final @NotNull PluginCommand command) {
@@ -51,8 +54,10 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      *
      * @param plugin      The plugin instance.
      * @param commandName The command name.
+     *
      * @return The command handler instance.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     @Contract(value = "_, _ -> this", mutates = "this")
     public final @NotNull CommandHandler setupCommand(final @NotNull Plugin plugin, final @NotNull String commandName) {
@@ -65,8 +70,10 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      *
      * @param sender  The command's sender.
      * @param command The command to default to if the usage is not set on the handler.
+     *
      * @return The command usage hint.
-     * @since 1.1-SNAPSHOT
+     *
+     * @since 1.1.0
      */
     @NotNull
     protected String getUsage(@NotNull final CommandSender sender, final @NotNull Command command) {
@@ -77,7 +84,8 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * Gets the plugin instance.
      *
      * @return The plugin instance.
-     * @since 1.2-SNAPSHOT
+     *
+     * @since 1.2.0
      */
     @NotNull
     public Plugin getPlugin() {
@@ -88,7 +96,10 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
      * Sets the command usage hint.
      *
      * @param usage The new usage hint.
-     * @since 1.1-SNAPSHOT
+     *
+     * @return Self.
+     *
+     * @since 1.1.0
      */
     @SuppressWarnings("UnusedReturnValue")
     @NotNull

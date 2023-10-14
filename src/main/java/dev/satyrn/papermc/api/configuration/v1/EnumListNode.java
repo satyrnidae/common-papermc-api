@@ -2,6 +2,7 @@ package dev.satyrn.papermc.api.configuration.v1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,9 @@ import java.util.logging.Level;
  * Represents a configuration node with a list of enum values.
  *
  * @param <E> The enum type.
+ *
  * @author Isabel Maskrey
- * @since 1.9.0
+ * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<List<E>> {
@@ -21,7 +23,8 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      *
      * @param parent The parent configuration.
      * @param name   The node's name.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     public EnumListNode(final @NotNull ConfigurationNode<?> parent, final @NotNull String name) {
         super(parent, name);
@@ -31,10 +34,11 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
      * Gets the value of the node.
      *
      * @return The value.
-     * @since 1.0-SNAPSHOT
+     *
+     * @since 1.0.0
      */
     @Override
-    public @NotNull List<E> value() {
+    public @NotNull @Unmodifiable List<E> value() {
         final @NotNull List<E> list = new ArrayList<>();
         final @NotNull List<String> values = this.getConfig().getStringList(this.getValuePath());
         for (final @Nullable String value : values) {
@@ -48,27 +52,32 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
                 }
             }
         }
-        return list;
+        return List.copyOf(list);
     }
 
     /**
      * Parses the enum value.
      *
      * @param value The string value from the config file
+     *
      * @return The parsed enum value.
+     *
      * @throws IllegalArgumentException Thrown when an invalid value is parsed.
-     * @since 1.0-SNAPSHOT
+     * @since 1.0.0
      */
     protected abstract @NotNull E parse(final @NotNull String value) throws IllegalArgumentException;
 
     /**
      * Gets the default value of the node.
+     * <p>
+     * Defaults to an empty, unmodifiable list.
      *
      * @return The value.
-     * @since 1.3-SNAPSHOT
+     *
+     * @since 1.3.0
      */
     @Override
-    public final @NotNull List<E> defaultValue() {
-        return new ArrayList<>();
+    public final @NotNull @Unmodifiable List<E> defaultValue() {
+        return List.of();
     }
 }
