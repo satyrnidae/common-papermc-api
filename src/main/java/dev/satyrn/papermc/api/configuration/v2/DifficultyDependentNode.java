@@ -137,32 +137,32 @@ public abstract class DifficultyDependentNode<T> extends ContainerNode {
      * @param difficulty The difficulty level.
      * @param value The value of the node at the difficulty level.
      *
-     * @since 1.10.0
+     * @since 1.10.2
      */
-    public final void setValue(@NotNull Difficulty difficulty, @Nullable T value) {
+    public final void setConfigValue(@NotNull Difficulty difficulty, @Nullable T value) {
         switch (difficulty) {
             case PEACEFUL:
                 final @Nullable ConfigurationNode<T> peacefulNode = this.getPeacefulNode();
                 if (peacefulNode != null) {
-                    peacefulNode.setValue(value);
+                    peacefulNode.setConfigValue(value);
                     break;
                 }
             case EASY:
                 final @Nullable ConfigurationNode<T> easyNode = this.getEasyNode();
                 if (easyNode != null) {
-                    easyNode.setValue(value);
+                    easyNode.setConfigValue(value);
                     break;
                 }
             case NORMAL:
                 final @Nullable ConfigurationNode<T> normalNode = this.getNormalNode();
                 if (normalNode != null) {
-                    normalNode.setValue(value);
+                    normalNode.setConfigValue(value);
                     break;
                 }
             case HARD:
                 final @Nullable ConfigurationNode<T> hardNode = this.getHardNode();
                 if (hardNode != null) {
-                    hardNode.setValue(value);
+                    hardNode.setConfigValue(value);
                     break;
                 }
         }

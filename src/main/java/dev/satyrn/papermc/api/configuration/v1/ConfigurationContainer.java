@@ -105,7 +105,7 @@ public abstract class ConfigurationContainer extends ConfigurationNode<Void> {
      * @since 1.10.0
      */
     @Override
-    public void setConfigValue(@Nullable Void value) { }
+    public void setConfigValue(@Nullable Object value) { }
 
     /**
      * Builds the string representation of the node.

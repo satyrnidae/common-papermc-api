@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
  *
  * @author Isabel Maskrey
  * @since 1.0.0
+ * @deprecated Use {@link dev.satyrn.lunamoth.i18n.v1.I18n} instead.
  */
+@Deprecated(since = "3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
 @SuppressWarnings("unused")
 public class I18n {
     /**

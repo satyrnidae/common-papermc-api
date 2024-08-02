@@ -1,5 +1,6 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import dev.satyrn.papermc.api.util.v1.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,11 +11,13 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
-public class DoubleNode extends ConfigurationNode<Double> {
+public class DoubleNode extends ConfigurationNode<Double> implements ValueCaching<Double> {
     // The minimum value of the node.
     private final double minValue;
     // The maximum value of the node.
     private final double maxValue;
+    // The last successfully read value of the node
+    private double cachedValue = this.defaultValue();
 
     /**
      * Creates a new configuration node with a double-precision floating point value.
@@ -55,8 +58,9 @@ public class DoubleNode extends ConfigurationNode<Double> {
      */
     @Override
     public final @NotNull Double value() {
-        return MathHelper.clampd(this.getConfig()
-                .getDouble(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
+        this.cachedValue = MathHelper.clampd(this.getConfig()
+                .getDouble(this.getValuePath(), this.cachedValue), this.minValue, this.maxValue);
+        return this.cachedValue;
     }
 
     /**
@@ -81,7 +85,32 @@ public class DoubleNode extends ConfigurationNode<Double> {
      * @since 1.9.0
      */
     @Override
-    public void setConfigValue(Double value) {
-        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clampd(value, this.minValue, this.maxValue));
+    public void setConfigValue(Object value) {
+        final double doubleValue = Cast.as(Double.class, value, this::defaultValue);
+        super.setConfigValue(MathHelper.clampd(doubleValue, this.minValue, this.maxValue));
+    }
+
+    /**
+     * Gets the cached value of the node.
+     *
+     * @return The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final @NotNull Double getCachedValue() {
+        return this.cachedValue;
+    }
+
+    /**
+     * Sets the current value of the node.
+     *
+     * @param cachedValue The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public void setCachedValue(@NotNull Double cachedValue) {
+        this.cachedValue = cachedValue;
     }
 }

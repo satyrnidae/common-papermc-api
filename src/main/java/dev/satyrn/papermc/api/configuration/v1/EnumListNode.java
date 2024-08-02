@@ -1,11 +1,13 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 /**
@@ -79,5 +81,18 @@ public abstract class EnumListNode<E extends Enum<E>> extends ConfigurationNode<
     @Override
     public final @NotNull @Unmodifiable List<E> defaultValue() {
         return List.of();
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public final void setConfigValue(@Nullable Object value) {
+        List<E> listValue = Cast.as(value, List::of);
+        super.setConfigValue(listValue.stream().filter(Objects::nonNull).map(Enum::name).toList());
     }
 }

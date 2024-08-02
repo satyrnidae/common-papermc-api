@@ -67,7 +67,7 @@ public abstract class RootNode extends ContainerNode {
         final int previousVersion = this.getVersion();
 
         this.getLogger().log(Level.FINE, "Config file updated to version " + newVersion + " from " + previousVersion);
-        this._version.setValue(newVersion);
+        this._version.setConfigValue(newVersion);
         this._version.setComments(
                 "Internal value to update the config file to the latest version.",
                 "Do not touch this!"

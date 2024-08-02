@@ -17,9 +17,10 @@ import java.util.logging.Level;
  *
  * @author Isabel Maskrey
  * @since 1.6.0
+ * @deprecated Use {@link dev.satyrn.lunamoth.storage.v1.MySQLConnectionSupplier} instead.
  */
-@Deprecated(since = "1.9.0")
-@SuppressWarnings({"unused", "ClassCanBeRecord"})
+@Deprecated(since = "1.9.0", forRemoval = true)
+@SuppressWarnings({"unused"})
 public class MySQLConnectionManager implements ConnectionManager {
     private final transient @NotNull Plugin plugin;
     private final transient @NotNull MySQLConfiguration configuration;

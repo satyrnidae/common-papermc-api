@@ -1,6 +1,8 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
 
@@ -11,7 +13,9 @@ import java.math.BigInteger;
  * @since 1.9.0
  */
 @SuppressWarnings("unused")
-public class BigIntegerNode extends ConfigurationNode<BigInteger> {
+public class BigIntegerNode extends ConfigurationNode<BigInteger> implements ValueCaching<BigInteger> {
+    // Returns the last successfully read value of the node.
+    private @NotNull BigInteger cachedValue = this.defaultValue();
 
     /**
      * Initializes a new Configuration node.
@@ -35,14 +39,19 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
     @Override
     public final @NotNull BigInteger value() {
         final String stringValue = this.getConfig().getString(this.getValuePath());
-        if (stringValue == null) {
-            return this.defaultValue();
+        if (stringValue != null) {
+            try {
+                this.cachedValue = new BigInteger(stringValue.trim());
+            } catch (NumberFormatException ex) {
+                this.getLogger()
+                        .warning(String.format("Invalid value for BigInteger node %s! Using current value %s.", this.getValuePath(), this.cachedValue));
+                this.getLogger().fine(ex::getMessage);
+                for (var line : ex.getStackTrace()) {
+                    this.getLogger().finest(line::toString);
+                }
+            }
         }
-        try {
-            return new BigInteger(stringValue);
-        } catch (NumberFormatException ex) {
-            return this.defaultValue();
-        }
+        return this.cachedValue;
     }
 
     /**
@@ -57,5 +66,42 @@ public class BigIntegerNode extends ConfigurationNode<BigInteger> {
     @Override
     public @NotNull BigInteger defaultValue() {
         return BigInteger.ZERO;
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public void setConfigValue(@Nullable Object value) {
+        BigInteger intValue = Cast.as(BigInteger.class, value, this::defaultValue);
+        super.setConfigValue(intValue.toString());
+    }
+
+    /**
+     * Gets the cached value of the node.
+     *
+     * @return The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final @NotNull BigInteger getCachedValue() {
+        return this.cachedValue;
+    }
+
+    /**
+     * Sets the current value of the node.
+     *
+     * @param cachedValue The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final void setCachedValue(@NotNull BigInteger cachedValue) {
+        this.cachedValue = cachedValue;
     }
 }

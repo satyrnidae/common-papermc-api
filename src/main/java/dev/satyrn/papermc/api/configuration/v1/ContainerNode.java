@@ -73,7 +73,7 @@ public abstract class ContainerNode extends ConfigurationNode<Void> {
      * @since 1.10.0
      */
     @Override
-    public void setConfigValue(@Nullable Void value) { }
+    public void setConfigValue(@Nullable Object value) { }
 
     /**
      * Writes the value of the node to the config file.

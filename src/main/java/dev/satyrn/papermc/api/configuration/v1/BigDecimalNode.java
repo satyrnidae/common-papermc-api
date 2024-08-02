@@ -1,6 +1,8 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 
@@ -11,7 +13,10 @@ import java.math.BigDecimal;
  * @since 1.3.0
  */
 @SuppressWarnings("unused")
-public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
+public class BigDecimalNode extends ConfigurationNode<BigDecimal> implements ValueCaching<BigDecimal> {
+    // Last successful read value.
+    private @NotNull BigDecimal cachedValue = this.defaultValue();
+
     /**
      * Initializes a new Configuration node.
      *
@@ -34,14 +39,19 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
     @Override
     public final @NotNull BigDecimal value() {
         final String stringValue = this.getConfig().getString(this.getValuePath());
-        if (stringValue == null) {
-            return this.defaultValue();
+        if (stringValue != null) {
+            try {
+                this.cachedValue = new BigDecimal(stringValue.trim());
+            } catch (NumberFormatException ex) {
+                this.getLogger().warning(String.format("Invalid value for BigDecimal node %s! Keeping current value %s.", this.getValuePath(), this.cachedValue));
+                this.getLogger().fine(ex::getMessage);
+                for (var line : ex.getStackTrace()) {
+                    this.getLogger().finest(line::toString);
+                }
+            }
         }
-        try {
-            return new BigDecimal(stringValue);
-        } catch (NumberFormatException ex) {
-            return this.defaultValue();
-        }
+
+        return this.cachedValue;
     }
 
     /**
@@ -56,5 +66,42 @@ public class BigDecimalNode extends ConfigurationNode<BigDecimal> {
     @Override
     public @NotNull BigDecimal defaultValue() {
         return BigDecimal.ZERO;
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public void setConfigValue(@Nullable Object value) {
+        BigDecimal bigDecimal = Cast.as(BigDecimal.class, value, this::defaultValue);
+        super.setConfigValue(bigDecimal.toString());
+    }
+
+    /**
+     * Gets the cached value of the node.
+     *
+     * @return The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final @NotNull BigDecimal getCachedValue() {
+        return this.cachedValue;
+    }
+
+    /**
+     * Sets the current value of the node.
+     *
+     * @param cachedValue The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final void setCachedValue(@NotNull BigDecimal cachedValue) {
+        this.cachedValue = cachedValue;
     }
 }

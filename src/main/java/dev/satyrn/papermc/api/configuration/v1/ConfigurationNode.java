@@ -27,7 +27,7 @@ public abstract class ConfigurationNode<T> {
     // The plugin. Cannot be null.
     private final @NotNull Plugin plugin;
     // All child objects added to this node.
-    private final @NotNull Collection<ConfigurationNode<?>> children = new HashSet<>();
+    private final @NotNull Collection<@NotNull ConfigurationNode<?>> children = new HashSet<>();
 
     /**
      * Initializes a new Configuration node.
@@ -310,7 +310,8 @@ public abstract class ConfigurationNode<T> {
      * @since 1.9.0
      * @deprecated Since 1.10.0. Use {@code setConfigValue(T)} instead. Will be removed in the future.
      */
-    @Deprecated(since = "1.10.0", forRemoval = true)
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated(since = "1.10.0")
     public void setValue(@Nullable T value) {
         this.setConfigValue(value);
     }
@@ -322,7 +323,7 @@ public abstract class ConfigurationNode<T> {
      *
      * @since 1.10.0
      */
-    public void setConfigValue(@Nullable T value) {
+    public void setConfigValue(@Nullable Object value) {
         // By default, we just write the value as provided.
         if (!this.getValuePath().isBlank()) {
             this.getConfig().set(this.getValuePath(), value);
@@ -398,6 +399,9 @@ public abstract class ConfigurationNode<T> {
         if (this.isSubNode() || this.hasChildren()) {
             // Yeah, this is confusing but bear with me
             this.setValue(value);
+            // We don't want to break existing functionality even tho technically
+            // consumers should just update the damn version
+            // Look I'm not great at writing APIs to keep working, ok???
         }
         if (this.hasChildren()) {
             for (ConfigurationNode<?> child : this.children) {
@@ -596,7 +600,7 @@ public abstract class ConfigurationNode<T> {
      * @since 1.9.1
      */
     public @NotNull @Unmodifiable List<@NotNull ConfigurationNode<?>> getChildren() {
-        return this.children.stream().filter(Objects::nonNull).toList();
+        return this.children.stream().toList();
     }
 
     /**
@@ -631,6 +635,8 @@ public abstract class ConfigurationNode<T> {
      * See {@link NodePriority} for an explanation of priority functionality.
      *
      * @return The node's priority.
+     *
+     * @since 1.10.0
      */
     public @NotNull NodePriority getPriority() {
         return NodePriority.NORMAL;

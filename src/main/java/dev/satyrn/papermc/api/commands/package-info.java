@@ -6,4 +6,4 @@
  * @since 1.0.0
  */
 @Deprecated(since = "3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
-package dev.satyrn.papermc.api.commands.v1;
+package dev.satyrn.papermc.api.commands;

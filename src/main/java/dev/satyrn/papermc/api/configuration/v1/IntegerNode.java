@@ -1,7 +1,9 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import dev.satyrn.papermc.api.util.v1.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a configuration node with an integer value.
@@ -10,11 +12,13 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
-public class IntegerNode extends ConfigurationNode<Integer> {
+public class IntegerNode extends ConfigurationNode<Integer> implements ValueCaching<Integer> {
     // The minimum value of the node.
     private final int minValue;
     // The maximum value of the node.
     private final int maxValue;
+    // The last value that was successfully read from the config.
+    private int cachedValue = this.defaultValue();
 
     /**
      * Creates a new configuration node with an integer value.
@@ -55,8 +59,9 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      */
     @Override
     public final @NotNull Integer value() {
-        return MathHelper.clamp(this.getConfig()
-                .getInt(this.getValuePath(), this.defaultValue()), this.minValue, this.maxValue);
+        this.cachedValue = MathHelper.clamp(this.getConfig()
+                .getInt(this.getValuePath(), this.cachedValue), this.minValue, this.maxValue);
+        return this.cachedValue;
     }
 
     /**
@@ -81,7 +86,32 @@ public class IntegerNode extends ConfigurationNode<Integer> {
      * @since 1.9.0
      */
     @Override
-    public void setConfigValue(Integer value) {
-        this.getConfig().set(this.getValuePath(), value == null ? this.defaultValue() : MathHelper.clamp(value, this.minValue, this.maxValue));
+    public void setConfigValue(@Nullable Object value) {
+        final int intValue = Cast.as(Integer.class, value, this::defaultValue);
+        super.setConfigValue(MathHelper.clamp(intValue, this.minValue, this.maxValue));
+    }
+
+    /**
+     * Gets the cached value of the node.
+     *
+     * @return The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final @NotNull Integer getCachedValue() {
+        return this.cachedValue;
+    }
+
+    /**
+     * Sets the current value of the node.
+     *
+     * @param cachedValue The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final void setCachedValue(@NotNull Integer cachedValue) {
+        this.cachedValue = cachedValue;
     }
 }

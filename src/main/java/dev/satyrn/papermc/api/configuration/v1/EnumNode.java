@@ -1,18 +1,21 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.logging.Level;
-
 /**
  * Represents a configuration node with an enum value.
+ *
+ * @param <E> The enum type
  *
  * @author Isabel Maskrey
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
-public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
+public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> implements ValueCaching<E> {
+    private @NotNull E cachedValue = this.defaultValue();
+
     /**
      * Creates a new configuration node with an enum value.
      *
@@ -37,14 +40,17 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
         final @Nullable String enumName = this.getConfig().getString(this.getValuePath());
         if (enumName != null && !enumName.isEmpty()) {
             try {
-                return this.parse(enumName);
+                this.cachedValue = this.parse(enumName);
             } catch (IllegalArgumentException ex) {
-                    this.getLogger()
-                            .log(Level.WARNING, String.format("[Configuration] Invalid value for %s: %s. The default value %s will be used instead.", this.getValuePath(), enumName, this.defaultValue()));
-                return this.getDefault();
+                this.getLogger()
+                        .warning(String.format("Invalid value for %s: %s. The current value %s will be used instead.", this.getValuePath(), enumName, this.defaultValue()));
+                this.getLogger().fine(ex::getMessage);
+                for (var line : ex.getStackTrace()) {
+                    this.getLogger().finest(line::toString);
+                }
             }
         }
-        return this.getDefault();
+        return this.cachedValue;
     }
 
     /**
@@ -78,5 +84,42 @@ public abstract class EnumNode<E extends Enum<E>> extends ConfigurationNode<E> {
     @Override
     public final @NotNull E defaultValue() {
         return getDefault();
+    }
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
+     */
+    @Override
+    public void setConfigValue(@Nullable Object value) {
+        final E enumValue = Cast.as(value, this::getDefault);
+        super.setConfigValue(enumValue.name());
+    }
+
+    /**
+     * Gets the cached value of the node.
+     *
+     * @return The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final @NotNull E getCachedValue() {
+        return this.cachedValue;
+    }
+
+    /**
+     * Sets the current value of the node.
+     *
+     * @param cachedValue The current value of the node.
+     *
+     * @since 2.0.0
+     */
+    @Override
+    public final void setCachedValue(@NotNull E cachedValue) {
+        this.cachedValue = cachedValue;
     }
 }

@@ -5,7 +5,10 @@ package dev.satyrn.papermc.api.util.v1;
  *
  * @author Isabel Maskrey
  * @since 1.5.0
+ *
+ * @deprecated since 3.0.0-paper-api.1.21-R0.1-SNAPSHOT. Use {@link dev.satyrn.lunamoth.util.v1.MathUtil} instead.
  */
+@Deprecated(since="3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
 @SuppressWarnings("unused")
 public final class MathHelper {
     private MathHelper() { }
@@ -20,7 +23,10 @@ public final class MathHelper {
      * @return The clamped result.
      *
      * @since 1.5.0
+     *
+     * @deprecated since 3.0.0-paper-api.1.21-R0.1-SNAPSHOT. Use {@link dev.satyrn.lunamoth.util.v1.MathUtil#clamp(double, double, double)} instead.
      */
+    @Deprecated(since="3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
     public static double clampd(double d, double min, double max) {
         return Math.max(min, Math.min(d, max));
     }
@@ -35,7 +41,10 @@ public final class MathHelper {
      * @return The clamped result.
      *
      * @since 1.5.0
+     *
+     * @deprecated since 3.0.0-paper-api.1.21-R0.1-SNAPSHOT. Use {@link dev.satyrn.lunamoth.util.v1.MathUtil#clamp(float, float, float)} instead.
      */
+    @Deprecated(since="3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
     public static float clampf(float f, float min, float max) {
         return Math.max(min, Math.min(f, max));
     }
@@ -50,7 +59,10 @@ public final class MathHelper {
      * @return The clamped result.
      *
      * @since 1.5.0
+     *
+     * @deprecated since 3.0.0-paper-api.1.21-R0.1-SNAPSHOT. Use {@link dev.satyrn.lunamoth.util.v1.MathUtil#clamp(int, int, int)} instead.
      */
+    @Deprecated(since="3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
     public static int clamp(int i, int min, int max) {
         return Math.max(min, Math.min(i, max));
     }
@@ -64,7 +76,10 @@ public final class MathHelper {
      * @return The resultant value.
      *
      * @since 1.5.0
+     *
+     * @deprecated since 3.0.0-paper-api.1.21-R0.1-SNAPSHOT. Use {@link dev.satyrn.lunamoth.util.v1.MathUtil#log(double, double)} instead.
      */
+    @Deprecated(since="3.0.0-paper-api.1.21-R0.1-SNAPSHOT", forRemoval = true)
     public static double logb(double value, double base) {
         return Math.log(value) / Math.log(base);
     }

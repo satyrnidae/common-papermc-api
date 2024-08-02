@@ -16,8 +16,8 @@ import java.util.List;
  * @author Isabel Maskrey
  * @deprecated Since 1.9.1. Use {@link dev.satyrn.papermc.api.configuration.v2.DifficultyDependentNode} instead. Default value is removed.
  */
-@Deprecated(since = "1.9.1")
-@SuppressWarnings("unused")
+@Deprecated(since = "1.9.1", forRemoval = true)
+@SuppressWarnings({"unused", "removal"})
 public abstract class DifficultyDependentNode<T> extends ConfigurationNode<T> {
 
     /**

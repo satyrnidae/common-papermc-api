@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Isabel Maskrey
  * @since 1.6.0
  *
- * @deprecated Since 1.9.0 versioning refactor. To be removed in a future version. Use {@link dev.satyrn.papermc.api.util.v1.Cast} instead.
+ * @deprecated Since 1.9.0 versioning refactor. To be removed in a future version. Use {@link dev.satyrn.lunamoth.util.v1.Cast} instead.
  */
 @Deprecated(since = "1.9.0", forRemoval = true)
 @SuppressWarnings("unused")
@@ -27,7 +27,9 @@ public final class Cast {
      * @param object  The object to cast.
      * @param <T>     The type that the object will be cast to.
      * @return An optional of T where the result is only present if the cast succeeded.
+     * @deprecated since 1.9.0. Use {@link dev.satyrn.lunamoth.util.v1.Cast#to(Class, Object)} instead.
      */
+    @Deprecated(since = "1.9.0", forRemoval = true)
     @SuppressWarnings("unused")
     public static <T> @NotNull Optional<T> as(@NotNull Class<T> asClass, @Nullable Object object) {
         if (object != null && asClass.isAssignableFrom(object.getClass())) {

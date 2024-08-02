@@ -1,5 +1,6 @@
 package dev.satyrn.papermc.api.configuration.v1;
 
+import dev.satyrn.papermc.api.util.v1.Cast;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ public abstract class OptionalConfigurationNode<T> extends ConfigurationNode<Opt
      */
     @Override
     public final @NotNull Optional<T> value() {
-        T value = this.getActualValue();
+        T value = this.getValue();
         return value == null ? this.defaultValue() : Optional.of(value);
     }
 
@@ -48,8 +49,9 @@ public abstract class OptionalConfigurationNode<T> extends ConfigurationNode<Opt
      * @since 1.9.1
      */
     @Override
-    public @NotNull Optional<T> defaultValue() {
-        return Optional.empty();
+    public final @NotNull Optional<T> defaultValue() {
+        T actualDefault = this.getDefault();
+        return Optional.ofNullable(actualDefault);
     }
 
     /**
@@ -59,23 +61,39 @@ public abstract class OptionalConfigurationNode<T> extends ConfigurationNode<Opt
      *
      * @since 1.9.1
      */
-    public abstract @Nullable T getActualValue();
+    @Deprecated(since = "1.10.2")
+    public @Nullable T getActualValue() {
+        return this.getValue();
+    }
 
     /**
-     * Writes the value of the node to the config file.
+     * Gets the underlying value of the node.
      *
-     * @since 1.9.1
+     * @return The actual value of the node.
+     *
+     * @since 1.10.2
+     */
+    public abstract @Nullable T getValue();
+
+    /**
+     * Gets the underlying default value of the node.
+     *
+     * @return The default value of the node.
+     *
+     * @since 1.10.2
+     */
+    public abstract @Nullable T getDefault();
+
+    /**
+     * Sets the value of the node in the configuration file.
+     *
+     * @param value The value to set.
+     *
+     * @since 1.10.0
      */
     @Override
-    public void save() {
-        T value = this.getActualValue();
-        if (this.isSubNode()) {
-            this.getConfig().set(this.getValuePath(), value);
-        }
-        if (this.hasChildren()) {
-            for (ConfigurationNode<?> child : this.getChildren()) {
-                child.save();
-            }
-        }
+    public void setConfigValue(@Nullable Object value) {
+        Optional<T> optional = Cast.as(value, Optional::empty);
+        super.setConfigValue(optional.orElseGet(this::getDefault));
     }
 }
