@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Represents the base class of a configuration node.
